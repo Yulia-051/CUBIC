@@ -13,6 +13,7 @@
 #include"./src/graphics/VBO.h"
 #include"./src/graphics/EBO.h"
 #include"rotate.h"
+#include "save_history.h"
 
 #define SIZE 5
 #define WINDOW_WIDTH  1200
@@ -34,42 +35,42 @@ void delete_obj(object* OBJ);
 void change_bot(object* button_r,object* button_u,object* button_d,object* button_l,object* button_reset,object* button_solve,object* button_back,object* button_forward,object* button_begin,object* button_end);
 void reset(char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
 
-void solve(int*count_moves,char* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void solve_center_rib(int*count_moves, char* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void center_rib(int* count_moves, char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void search_and_rotate_center_rib(int*count_moves, char* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE],int* count,char search);
+void solve(int*count_moves,struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void solve_center_rib(int*count_moves, struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void center_rib(int* count_moves, struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void search_and_rotate_center_rib(int*count_moves, struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE],int* count,char search);
 void cntNotOneColor(char edge[SIZE][SIZE],char search, int* count,int num);
 int cheak_center(int num,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void solve_center_corn(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void center_corn(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void search_and_rotate_center_corn(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE],int* count,char search);
+void solve_center_corn(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void center_corn(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void search_and_rotate_center_corn(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE],int* count,char search);
 
-int search_rib_for_change(int*count_moves,char* history,int var, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void change_ribs(int*count_moves,char* history,int num_in_rib, int var,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+int search_rib_for_change(int*count_moves,struct history* history,int var, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void change_ribs(int*count_moves,struct history* history,int num_in_rib, int var,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
 void cntNotOneColor_rib(char f [SIZE][SIZE],char u[SIZE][SIZE],char search_f,char search_u,int* count);
 int cheak_ribs(int* sequence_edges,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void solve_ribs(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void last_ribs(int*count_moves,char* history,int* sequence_edges, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void solve_white_rib(int*count_moves,char* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void solve_ribs(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void last_ribs(int*count_moves,struct history* history,int* sequence_edges, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void solve_white_rib(int*count_moves,struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
 int where_rib(char search_f, char search_u, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void solve_corners(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void solve_right_place_for_rib(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void swap_rib_right(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void yellow_ribs(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void change_last_four_ribs(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void four_edges_color(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void last_corners_part1(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void rotate_last_corn_for_part1(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
-void last_corners_part2(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void solve_corners(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void solve_right_place_for_rib(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void swap_rib_right(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void yellow_ribs(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void change_last_four_ribs(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void four_edges_color(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void last_corners_part1(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void rotate_last_corn_for_part1(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void last_corners_part2(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
 
 
 void printRubiksCube(char left[SIZE][SIZE], char front[SIZE][SIZE], char right[SIZE][SIZE], char back[SIZE][SIZE], char up[SIZE][SIZE], char down[SIZE][SIZE]);
 void printMatrix(char matrix[SIZE][SIZE]);
-int operation(int* count_moves,char* history,int where,char orient,char l[SIZE][SIZE], char f[SIZE][SIZE], char r[SIZE][SIZE], char b[SIZE][SIZE], char u[SIZE][SIZE], char d[SIZE][SIZE]);
+int operation(int* count_moves,struct history* history,int where,char orient,char l[SIZE][SIZE], char f[SIZE][SIZE], char r[SIZE][SIZE], char b[SIZE][SIZE], char u[SIZE][SIZE], char d[SIZE][SIZE]);
 void one_square(int i,char color);
 GLFWwindow* openWindow(GLFWwindow* window);
 
-void turn_cube(int* count_moves, char* history, char orient, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
+void turn_cube(int* count_moves, struct history* history, char orient, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]);
 
 float w1 = 1.0f,w2 = 1.0f,w3 = 1.0f;
 float r1 = 1.0f,r2 = 0.0f, r3 = 0.2f;
@@ -632,9 +633,13 @@ int main(){
                            {'Y', 'Y', 'Y', 'Y', 'Y'},
                            {'Y', 'Y', 'Y', 'Y', 'Y'},
                            {'Y', 'Y', 'Y', 'Y', 'Y'}};
-    char* history=(char*)malloc(150*STEPS);//75000 = 500*6*25
+    
+
+    //РЎРѕР·РґР°С‘Рј РЅРѕРІСѓСЋ РёСЃС‚РѕСЂРёСЋ СЃРѕС…СЂР°РЅРµРЅРёР№
+    struct history* history = init_history();
+
     int count_moves = 0;
-    save_to_history(&count_moves,history,left,front,right,back,up,down);
+    save_data_to_history(history,left,front,right,back,up,down,&count_moves);
     
     glfwInit();
   
@@ -655,9 +660,9 @@ int main(){
 
     shaderProgram->texture_slot0_uniform = glGetUniformLocation(shaderProgram->ID, TEXTURE_SLOT0_UNIFORM);
     glUniform1i(shaderProgram->texture_slot0_uniform, 0);
-    glEnable(GL_BLEND);   // neeeeee прозрачность 2
+    glEnable(GL_BLEND);   // neeeeee пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 2
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    /* объекты */
+    /* пїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
     object* CUBE = create_object(1);
 
     object* button_u = create_object(0);
@@ -763,7 +768,7 @@ int main(){
                 if(pressed){
                     active = 1;
                     count_moves = 0;
-                    save_to_history(&count_moves,history,left, front, right, back,up,down);
+                    save_data_to_history(history,left, front, right, back,up,down, &count_moves);
                     clock_t begin = clock();
                     solve(&count_moves,history,left, front, right, back,up,down);
                     clock_t end = clock();
@@ -778,12 +783,12 @@ int main(){
                 button_back->active_bot = 1;
                 if(pressed){
                     active = 1;
-                    //предыдущее состояние
+                    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                     
                     if(count_moves!=1){
                         if(status_cube==0){status_cube=count_moves;}
                         status_cube--; 
-                        view_cube_from_history(&status_cube,history,left,front,right,back,up,down);
+                        view_cube_from_history(GET_PREV,history,left,front,right,back,up,down);
                     }
                 }
             }
@@ -798,10 +803,10 @@ int main(){
                         if(status_cube > count_moves){
                             status_cube--;
                         }
-                        view_cube_from_history(&status_cube,history,left,front,right,back,up,down);
+                        view_cube_from_history(GET_NEXT,history,left,front,right,back,up,down);
                     
                     }
-                    //следующее состояние кубика
+                    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                 }
             }
             else if(where_cur_bot(window,button_begin)){
@@ -809,10 +814,10 @@ int main(){
                 button_begin->active_bot = 1;
                 if(pressed){
                     active = 1;
-                    //первое состояние кубика
+                    //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                     if(count_moves!=0){
                         status_cube=1;
-                        view_cube_from_history(&status_cube,history,left,front,right,back,up,down);
+                        view_cube_from_history(GET_HEAD,history,left,front,right,back,up,down);
                     }
                 }
             }
@@ -821,10 +826,10 @@ int main(){
                 button_end->active_bot = 1;
                 if(pressed){
                     active = 1;
-                    //последнее состояние кубика
+                    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                     if(count_moves!=0){
                         status_cube=count_moves;
-                        view_cube_from_history(&status_cube,history,left,front,right,back,up,down);
+                        view_cube_from_history(GET_TAIL,history,left,front,right,back,up,down);
                     }
                 }
             }
@@ -1053,7 +1058,7 @@ void change_cube(VAO* VAO1,VBO* VBO1, EBO* EBO1, char front[SIZE][SIZE], char up
     VBO_Unbind();
     EBO_Unbind();
 }
-int operation(int* count_moves,char* history,int where,char orient, char l[SIZE][SIZE], char f[SIZE][SIZE], char r[SIZE][SIZE], char b[SIZE][SIZE], char u[SIZE][SIZE], char d[SIZE][SIZE]){
+int operation(int* count_moves,struct history* history,int where,char orient, char l[SIZE][SIZE], char f[SIZE][SIZE], char r[SIZE][SIZE], char b[SIZE][SIZE], char u[SIZE][SIZE], char d[SIZE][SIZE]){
     
     if(orient == 'r'){
         switch(where){
@@ -1194,7 +1199,7 @@ int where_cursor(GLFWwindow* window){
     for( int i = 0;i<SIZE;i++){
       
         for(int j = 0; j<SIZE; j++){
-             /* • Вынесения инвариантов из цикла */
+             /* пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ */
             if(vertices[shift+(i*SIZE+j)*24 + 3*6]<=mouse_x && mouse_x <= vertices[shift+(i*SIZE+j)*24 + 1*6] && vertices[shift+(i*SIZE+j)*24 + 3*6 + 1]<= mouse_y && mouse_y <=vertices[shift+(i*SIZE+j)*24 + 1*6 + 1]){
                 return i*SIZE+j;
             }
@@ -1259,7 +1264,7 @@ void one_square(int i,char color){
     else if(color == 'Y'){
         c1 = yl1;c2 = yl2; c3 = yl3;
     }
-     /* • Вынесения инвариантов из цикла */
+     /* пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ */
     for(int j = 0;j<4;j++){
         vertices[i + j*6 + 3]=c1;
         vertices[i + j*6 + 4]=c2;
@@ -1278,8 +1283,8 @@ void mas_to_color(char mas[SIZE][SIZE],char edge){
     }
     for(;i<SIZE;i++){
         for(int j = 0; j<SIZE; j++){
-            /* • Вынесения инвариантов из цикла */
-            /* Исключение общих операций */
+            /* пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ */
+            /* пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ */
             if(mas[i][j]=='R' && (vertices[shift + (i*SIZE+j)*24+3]!=r1 || vertices[shift + (i*SIZE+j)*24+4]!=r2 || vertices[shift + (i*SIZE+j)*24+5]!=r3)){
                 one_square(shift + (i*SIZE+j)*24,'R');
             }
@@ -1304,11 +1309,11 @@ void mas_to_color(char mas[SIZE][SIZE],char edge){
 
 ///////////////////////////////////////////
 
-void turn_cube(int* count_moves,char* history,char orient, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void turn_cube(int* count_moves,struct history* history,char orient, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     char temp;
     if(orient == 'u'){
         for(int k = 0; k < SIZE; k++){
-            /* • Вынесения инвариантов из цикла 4-k */
+            /* пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 4-k */
             for (int i = 0; i < SIZE; i++) {
                 temp = u[i][k];
                 u[i][k] = f[i][k];
@@ -1348,7 +1353,7 @@ void turn_cube(int* count_moves,char* history,char orient, char l[SIZE][SIZE], c
     }
     else if(orient == 'd'){
         for(int k = 0; k < SIZE; k++){
-            /* • Вынесения инвариантов из цикла 4-k */
+            /* пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 4-k */
             for (int i = 0; i < SIZE; i++) {
                 temp = u[i][k];
                 u[i][k] = b[4-i][4-k];
@@ -1360,10 +1365,10 @@ void turn_cube(int* count_moves,char* history,char orient, char l[SIZE][SIZE], c
         edgeClock(l);
         edgeUnClock(r);
     }
-    save_to_history(count_moves,history,l,f,r,b,u,d);
+    save_data_to_history(history,l,f,r,b,u,d, count_moves);
 }
 /////////////////////////////////////////////////////////
-void solve_center_corn(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void solve_center_corn(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int count = 0;
     char search;
     int cnt_edge = 0;
@@ -1421,7 +1426,7 @@ void solve_center_corn(int*count_moves,char* history,char l[SIZE][SIZE], char f[
     }
     
 }
-void solve_center_rib(int*count_moves, char* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void solve_center_rib(int*count_moves, struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int count = 0;
     char search = f[2][2];
     int cnt_edge = 0;
@@ -1505,7 +1510,7 @@ void cntNotOneColor(char edge[SIZE][SIZE],char search, int* count,int num){
         }
     }
 }
-void search_and_rotate_center_corn(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE],int* count,char search){
+void search_and_rotate_center_corn(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE],int* count,char search){
     
     while( u[1][1] == search || u[1][3] == search || u[3][1] == search || u[3][3] == search ){
 
@@ -1540,7 +1545,7 @@ void search_and_rotate_center_corn(int*count_moves,char* history,char l[SIZE][SI
     }
     
 }
-void search_and_rotate_center_rib(int*count_moves, char* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE],int* count,char search){
+void search_and_rotate_center_rib(int*count_moves, struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE],int* count,char search){
     
      while( u[2][3] == search || u[1][2] == search || u[2][1] == search || u[3][2] == search ){
 
@@ -1579,22 +1584,22 @@ void search_and_rotate_center_rib(int*count_moves, char* history, char l[SIZE][S
     }
 }
 
-void solve(int*count_moves, char* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
-    /* подготовка к сборке 3х3 */
-    solve_center_rib(count_moves,history,l,f,r,b,u,d);  // cборка центрального креста
-    solve_center_corn(count_moves,history,l,f,r,b,u,d); // сборка центрального X
-    solve_ribs(count_moves,history,l,f,r,b,u,d);// тут паритеты , сборка ребер
-    /* сборка 3х3 */
-    solve_white_rib(count_moves,history,l,f,r,b,u,d); //установка нижних белых ребер
-    solve_corners(count_moves,history,l,f,r,b,u,d); // утсановка нижних белых углов
-    solve_right_place_for_rib(count_moves,history,l,f,r,b,u,d); // установвка боковых ребер
-    yellow_ribs(count_moves,history,l,f,r,b,u,d); //установка желых ребер на желтой грани
-    four_edges_color(count_moves,history,l,f,r,b,u,d); // желтая грани собрана, 4 нижних слоя собраны
+void solve(int*count_moves, struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+    /* пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ 3пїЅ3 */
+    solve_center_rib(count_moves,history,l,f,r,b,u,d);  // cпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
+    solve_center_corn(count_moves,history,l,f,r,b,u,d); // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ X
+    solve_ribs(count_moves,history,l,f,r,b,u,d);// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ , пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    /* пїЅпїЅпїЅпїЅпїЅпїЅ 3пїЅ3 */
+    solve_white_rib(count_moves,history,l,f,r,b,u,d); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    solve_corners(count_moves,history,l,f,r,b,u,d); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    solve_right_place_for_rib(count_moves,history,l,f,r,b,u,d); // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    yellow_ribs(count_moves,history,l,f,r,b,u,d); //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    four_edges_color(count_moves,history,l,f,r,b,u,d); // пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, 4 пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     last_corners_part1(count_moves,history,l,f,r,b,u,d);
     last_corners_part2(count_moves,history,l,f,r,b,u,d);
 }
 
-/* убрать цикл */
+/* пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ */
 void reset(char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     for(int i = 0; i< SIZE; i++){
         for(int j = 0; j<SIZE; j++){
@@ -1608,7 +1613,7 @@ void reset(char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZ
     }
 }
 
-void center_rib(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void center_rib(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     R2_(count_moves,history,l,f,r,b,u,d);
     R_(count_moves,history,l,f,r,b,u,d);
     F_(count_moves,history,l,f,r,b,u,d);
@@ -1630,7 +1635,7 @@ void center_rib(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][S
     F(count_moves,history,l,f,r,b,u,d);
 }
 
-void center_corn(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void center_corn(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     R2(count_moves,history,l,f,r,b,u,d);
     R(count_moves,history,l,f,r,b,u,d);
     U_(count_moves,history,l,f,r,b,u,d);
@@ -1658,10 +1663,10 @@ void printMatrix(char matrix[SIZE][SIZE]) {
     }
 }
 void printRubiksCube(char left[SIZE][SIZE], char front[SIZE][SIZE], char right[SIZE][SIZE], char back[SIZE][SIZE], char up[SIZE][SIZE], char down[SIZE][SIZE]) {
-    // Вывод верхней части
+    // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     printMatrix(up);
 
-    // Вывод левой, передней, правой и задней частей
+    // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     for (int i = 0; i < SIZE; i++) {
         printf("%c%c%c%c%c   ", left[i][0], left[i][1], left[i][2], left[i][3], left[i][4]);
         printf("%c%c%c%c%c   ", front[i][0], front[i][1], front[i][2], front[i][3], front[i][4]);
@@ -1669,11 +1674,11 @@ void printRubiksCube(char left[SIZE][SIZE], char front[SIZE][SIZE], char right[S
         printf("%c%c%c%c%c\n", back[i][0], back[i][1], back[i][2], back[i][3], back[i][4]);
     }
 
-    // Вывод нижней части
+    // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     printMatrix(down);
     printf("\n");
 }
-void solve_ribs(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void solve_ribs(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int count;
     char search_f;
     char search_u;
@@ -1724,7 +1729,7 @@ void solve_ribs(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][S
         int cheak = cheak_ribs(sequence_edges,l,f,r,b,u,d);
         
         
-        /* здесь что-то странное*/
+        /* пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ*/
         if(cheak == 0){break;}
         else if(cheak == 1){
             last_ribs(count_moves,history,sequence_edges,l,f,r,b,u,d);
@@ -1742,7 +1747,7 @@ void solve_ribs(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][S
         }
     }
 }
-void last_ribs(int*count_moves,char* history,int* sequence_edges, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void last_ribs(int*count_moves,struct history* history,int* sequence_edges, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int k =0;
     int j =0;
     //char*edges[][5]={f,d, f,r, f,l, r,b, r,u, r,d, u,b, l,b, b,d, l,d, l,u, f,u};
@@ -1941,7 +1946,7 @@ void cntNotOneColor_rib(char f [SIZE][SIZE],char u[SIZE][SIZE],char search_f,cha
 //rotate if rib isnt full
 //if 10_ribs full then
 
-void change_ribs(int*count_moves,char* history,int num_in_rib, int var,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void change_ribs(int*count_moves,struct history* history,int num_in_rib, int var,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     //char*edges[][5]={f,d,f,r,f,l,r,b,r,u,r,d,u,b,l,b,b,d,l,d,l,u,f,u};
     int cnt = 0;
     int steps = 0;
@@ -1992,7 +1997,7 @@ void change_ribs(int*count_moves,char* history,int num_in_rib, int var,char l[SI
     }
     
 }
-int search_rib_for_change(int*count_moves,char* history,int var, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+int search_rib_for_change(int*count_moves,struct history* history,int var, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int size = 4;
 
     int mas_f_r[]={1,4,3,4,2,4};
@@ -2095,7 +2100,7 @@ int search_rib_for_change(int*count_moves,char* history,int var, char l[SIZE][SI
     
 }
 
-void solve_white_rib(int*count_moves,char* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void solve_white_rib(int*count_moves,struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int steps=0;
     while(u[2][2]!='W'&&steps<5){
         if(steps<3){
@@ -2210,13 +2215,13 @@ int where_rib(char search_f, char search_u, char l[SIZE][SIZE], char f[SIZE][SIZ
     }
     return j;
 }
-void rotate_corn(int* count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void rotate_corn(int* count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     R(count_moves,history,l,f,r,b,u,d);
     U_(count_moves,history,l,f,r,b,u,d);
     R_(count_moves,history,l,f,r,b,u,d);
     U(count_moves,history,l,f,r,b,u,d);
 }
-void solve_corners(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void solve_corners(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     
     turn_cube(count_moves,history,'u',l,f,r,b,u,d);
     turn_cube(count_moves,history,'u',l,f,r,b,u,d);
@@ -2249,7 +2254,7 @@ void solve_corners(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE
         search_r=r[2][2];
         search_d=d[2][2];
         if(f[4][4]!=search_f || d[0][4]!=search_d || r[4][0]!=search_r){
-            //Де Морган
+            //пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             while(!((f[0][4]==search_f || f[0][4]==search_r || f[0][4]==search_d)&&(u[4][4]==search_f || u[4][4]==search_d || u[4][4]==search_r)&&(r[0][0]==search_f || r[0][0]==search_d || r[0][0]==search_r))){
                 U_(count_moves,history,l,f,r,b,u,d);
                 
@@ -2261,7 +2266,7 @@ void solve_corners(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE
     
 }
 //////////
-void swap_rib_right(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void swap_rib_right(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     U_(count_moves,history,l,f,r,b,u,d);
     R(count_moves,history,l,f,r,b,u,d);
     U(count_moves,history,l,f,r,b,u,d);
@@ -2271,7 +2276,7 @@ void swap_rib_right(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZ
     U_(count_moves,history,l,f,r,b,u,d);
     F(count_moves,history,l,f,r,b,u,d);
 }
-void swap_rib_left(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void swap_rib_left(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     U(count_moves,history,l,f,r,b,u,d);
     L_(count_moves,history,l,f,r,b,u,d);
     U_(count_moves,history,l,f,r,b,u,d);
@@ -2281,7 +2286,7 @@ void swap_rib_left(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE
     U(count_moves,history,l,f,r,b,u,d);
     F_(count_moves,history,l,f,r,b,u,d);
 }
-void solve_right_place_for_rib(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void solve_right_place_for_rib(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     for(int i = 0;i<4;i++){
         if(f[2][4]!=u[2][2] && r[2][0]!=u[2][2] && (f[2][4]!=f[2][2] || r[2][0]!=r[2][2])){
             while(f[0][2]!=u[2][2] && u[4][2]!=u[2][2]){U_(count_moves,history,l,f,r,b,u,d);}
@@ -2318,7 +2323,7 @@ void solve_right_place_for_rib(int*count_moves,char* history,char l[SIZE][SIZE],
         
     }
 }
-void yellow_ribs(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void yellow_ribs(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     // int mas_u[]={0,2, 2,0, 2,4, 4,2};
     int count=0;
 
@@ -2358,7 +2363,7 @@ void yellow_ribs(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][
     }
     
 }
-void four_edges_color(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void four_edges_color(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int count=0;
     int max_cnt=0;
     int max_i = 0;
@@ -2413,7 +2418,7 @@ void four_edges_color(int*count_moves,char* history,char l[SIZE][SIZE], char f[S
     }
 
 }
-void change_last_four_ribs(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void change_last_four_ribs(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     R(count_moves,history,l,f,r,b,u,d);
     U_(count_moves,history,l,f,r,b,u,d);
     R_(count_moves,history,l,f,r,b,u,d);
@@ -2425,7 +2430,7 @@ void change_last_four_ribs(int*count_moves,char* history,char l[SIZE][SIZE], cha
     U_(count_moves,history,l,f,r,b,u,d);
 }
 
-void last_corners_part1(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void last_corners_part1(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int up_left = 0;
     int up_right = 0;
     int down_left = 0;
@@ -2464,7 +2469,7 @@ void last_corners_part1(int*count_moves,char* history,char l[SIZE][SIZE], char f
         }
     }
 }
-void rotate_last_corn_for_part1(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void rotate_last_corn_for_part1(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     R(count_moves,history,l,f,r,b,u,d);
     U(count_moves,history,l,f,r,b,u,d);
     L_(count_moves,history,l,f,r,b,u,d);
@@ -2474,7 +2479,7 @@ void rotate_last_corn_for_part1(int*count_moves,char* history,char l[SIZE][SIZE]
     L(count_moves,history,l,f,r,b,u,d);
     U_(count_moves,history,l,f,r,b,u,d);
 }
-void last_corners_part2(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void last_corners_part2(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int count = 4;
     if(u[0][0]==u[2][2]&& l[0][0]==l[2][2] &&  b[4][4]==b[2][2]){
         count--;
@@ -2511,5 +2516,5 @@ void last_corners_part2(int*count_moves,char* history,char l[SIZE][SIZE], char f
 
 }
 
-//malloc возвращает void, 
-// размер кубика * отступ
+//malloc пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ void, 
+// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ * пїЅпїЅпїЅпїЅпїЅпїЅ
