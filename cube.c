@@ -657,7 +657,7 @@ int main(){
     glUniform1i(shaderProgram->texture_slot0_uniform, 0);
     glEnable(GL_BLEND);   // neeeeee прозрачность 2
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    /* объекты */
     object* CUBE = create_object(1);
 
     object* button_u = create_object(0);
