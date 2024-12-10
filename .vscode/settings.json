@@ -1,0 +1,13 @@
+{
+    "C_Cpp.errorSquiggles": "enabled",
+    "cmake.configureOnOpen": false,
+    "files.associations": {
+        "limits": "c",
+        "struct.h": "c",
+        "vao.h": "c",
+        "rotate.h": "c"
+    },
+    "accessibility.signals.lineHasError": {
+        "announcement": "auto"
+    }
+}
