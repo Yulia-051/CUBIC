@@ -3,7 +3,6 @@
 #include <math.h>
 #include "glad/glad.h"
 #include <GLFW/glfw3.h>
-#include <GL/glut.h>
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 #include <time.h>
@@ -633,7 +632,8 @@ int main(){
                            {'Y', 'Y', 'Y', 'Y', 'Y'},
                            {'Y', 'Y', 'Y', 'Y', 'Y'},
                            {'Y', 'Y', 'Y', 'Y', 'Y'}};
-    char* history=(char*)malloc(150*STEPS);//75000 = 500*6*25
+
+    char* history=(char*)malloc(150 * STEPS);//75000 = 500*6*25
     int count_moves = 0;
     save_to_history(&count_moves,history,left,front,right,back,up,down);
     
@@ -656,7 +656,7 @@ int main(){
 
     shaderProgram->texture_slot0_uniform = glGetUniformLocation(shaderProgram->ID, TEXTURE_SLOT0_UNIFORM);
     glUniform1i(shaderProgram->texture_slot0_uniform, 0);
-    glEnable(GL_BLEND);   // neeeeee прозрачность 2
+    glEnable(GL_BLEND);   // neeeeee пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 2
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     object* CUBE = create_object(1);
@@ -779,7 +779,7 @@ int main(){
                 button_back->active_bot = 1;
                 if(pressed){
                     active = 1;
-                    //предыдущее состояние
+                    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
                     
                     if(count_moves!=1){
                         if(status_cube==0){status_cube=count_moves;}
@@ -802,7 +802,7 @@ int main(){
                         view_cube_from_history(&status_cube,history,left,front,right,back,up,down);
                     
                     }
-                    //следующее состояние кубика
+                    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                 }
             }
             else if(where_cur_bot(window,button_begin)){
@@ -810,7 +810,7 @@ int main(){
                 button_begin->active_bot = 1;
                 if(pressed){
                     active = 1;
-                    //первое состояние кубика
+                    //пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                     if(count_moves!=0){
                         status_cube=1;
                         view_cube_from_history(&status_cube,history,left,front,right,back,up,down);
@@ -822,7 +822,7 @@ int main(){
                 button_end->active_bot = 1;
                 if(pressed){
                     active = 1;
-                    //последнее состояние кубика
+                    //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
                     if(count_moves!=0){
                         status_cube=count_moves;
                         view_cube_from_history(&status_cube,history,left,front,right,back,up,down);
@@ -1576,7 +1576,7 @@ void search_and_rotate_center_rib(int*count_moves, char* history, char l[SIZE][S
 void solve(int*count_moves, char* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     solve_center_rib(count_moves,history,l,f,r,b,u,d);
     solve_center_corn(count_moves,history,l,f,r,b,u,d);
-    solve_ribs(count_moves,history,l,f,r,b,u,d);// тут паритеты
+    solve_ribs(count_moves,history,l,f,r,b,u,d);// пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     solve_white_rib(count_moves,history,l,f,r,b,u,d);
     solve_corners(count_moves,history,l,f,r,b,u,d);
     solve_right_place_for_rib(count_moves,history,l,f,r,b,u,d);
@@ -1648,10 +1648,10 @@ void printMatrix(char matrix[SIZE][SIZE]) {
     }
 }
 void printRubiksCube(char left[SIZE][SIZE], char front[SIZE][SIZE], char right[SIZE][SIZE], char back[SIZE][SIZE], char up[SIZE][SIZE], char down[SIZE][SIZE]) {
-    // Вывод верхней части
+    // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     printMatrix(up);
 
-    // Вывод левой, передней, правой и задней частей
+    // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
     for (int i = 0; i < SIZE; i++) {
         printf("%c%c%c%c%c   ", left[i][0], left[i][1], left[i][2], left[i][3], left[i][4]);
         printf("%c%c%c%c%c   ", front[i][0], front[i][1], front[i][2], front[i][3], front[i][4]);
@@ -1659,7 +1659,7 @@ void printRubiksCube(char left[SIZE][SIZE], char front[SIZE][SIZE], char right[S
         printf("%c%c%c%c%c\n", back[i][0], back[i][1], back[i][2], back[i][3], back[i][4]);
     }
 
-    // Вывод нижней части
+    // пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     printMatrix(down);
     printf("\n");
 }
@@ -2068,10 +2068,6 @@ int search_rib_for_change(int*count_moves,char* history,int var, char l[SIZE][SI
             cnt=0;
             for(int i=0;i<size;i+=2){
                 if(edge1[mas1[i]][mas1[i+1]]!=search_1 || edge2[mas2[i]][mas2[i+1]]!=search_2){
-                    // if(edge1[mas1[i]][mas1[i+1]]!=search_2 || edge2[mas2[i]][mas2[i+1]]!=search_1){
-                    //     cnt++;
-                    //     break;
-                    // }
                     cnt++;
                     break;
                 }
@@ -2501,5 +2497,3 @@ void last_corners_part2(int*count_moves,char* history,char l[SIZE][SIZE], char f
 
 }
 
-//malloc возвращает void, 
-// размер кубика * отступ

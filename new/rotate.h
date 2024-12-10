@@ -46,6 +46,7 @@ void save_to_history(int* count, char* history,char l[SIZE][SIZE], char f[SIZE][
     memcpy(history+SIZE_EDGE*(*count)*6+SIZE_EDGE*5,d,25);
     (*count)++;
 }
+
 void view_cube_from_history(int* count, char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     if(*count<1){*count=1;printf("0 element\n");}
     memcpy(l,history+SIZE_EDGE*(*count-1)*6,25);
