@@ -639,7 +639,7 @@ int main(){
     struct history* history = init_history();
 
     int count_moves = 0;
-    save_data_to_history(history,left,front,right,back,up,down,&count_moves);
+    //save_data_to_history(history,left,front,right,back,up,down,&count_moves);
     
     glfwInit();
   
@@ -759,6 +759,7 @@ int main(){
                 button_reset->active_bot = 1;
                 if(pressed){
                     active = 1;
+                    clear_history(history);
                     reset(left, front, right, back,up,down);
                 }
             }
@@ -768,6 +769,7 @@ int main(){
                 if(pressed){
                     active = 1;
                     count_moves = 0;
+                    clear_history(history);
                     save_data_to_history(history,left, front, right, back,up,down, &count_moves);
                     clock_t begin = clock();
                     solve(&count_moves,history,left, front, right, back,up,down);
@@ -921,6 +923,11 @@ int main(){
         glDisableVertexAttribArray(2);
         glfwPollEvents();
     }
+
+    //Очистка истории и освобождение памяти
+    clear_history(history);
+    free(history);
+
     delete_obj(CUBE);
     delete_obj(button_u);
     delete_obj(button_r);

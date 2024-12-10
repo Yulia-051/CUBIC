@@ -61,4 +61,6 @@ static struct history_node* make_history_node();
 //Вставляет struct history_node в конец списка сохранений
 static void insert_save_in_history(struct history* hist,struct history_node* hist_node);
 
+//Очищает историю
+void clear_history(struct history* history);
 #endif

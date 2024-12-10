@@ -60,11 +60,11 @@ int save_data_to_history(struct history* history,
 //Возвращает указатель на данные из истории по указанному событию
 char* get_data_from_history(struct history* hist, int action)
 {
-    if (action == GET_HEAD){
+    if (action == GET_HEAD && hist->head != NULL){
         hist->current = hist->head;
         return hist->current->data;
     }
-    else if (action == GET_TAIL){
+    else if (action == GET_TAIL && hist->tail != NULL){
         hist->current = hist->tail;
         return hist->current->data;
     }
@@ -120,4 +120,19 @@ static void insert_save_in_history(struct history* hist, struct history_node* hi
     hist->current = hist_node;
 }
 
+//Очищает историю
+void clear_history(struct history* history)
+{
+    struct history_node* tmp;
+    for (struct history_node* current_node = history->head; current_node != NULL;){
+        tmp = current_node;
+        current_node = current_node->next;
+        free(tmp->data);
+        free(tmp);
+    }
+
+    history->current = NULL;
+    history->head = NULL;
+    history->tail = NULL;
+}
 #endif
