@@ -1369,8 +1369,9 @@ void solve_center_corn(int*count_moves,char* history,char l[SIZE][SIZE], char f[
     int cnt_edge = 0;
     int steps = 0;
     int doub;
+    int down_cnt = 0;
     
-    for(int j=0;j<6;j++){
+    for(int j=0; j<8 ;j++){
         count = 0;
         steps = 0;
         search = f[2][2];
@@ -1378,8 +1379,7 @@ void solve_center_corn(int*count_moves,char* history,char l[SIZE][SIZE], char f[
         
         cntNotOneColor(f,search,&count,2);
         while(count!=0){
-            
-                        
+                      
             search_and_rotate_center_corn(count_moves,history,l,f,r,b,u,d,&count,search);
             if(count!=0 && cnt_edge!=3 && steps!=4){
                 cnt_edge++;
@@ -1412,12 +1412,18 @@ void solve_center_corn(int*count_moves,char* history,char l[SIZE][SIZE], char f[
                 doub = count;
                 search_and_rotate_center_corn(count_moves,history,l,f,r,b,u,d,&doub,search);
                 turn_cube(count_moves,history,'d',l,f,r,b,u,d);
-                search_and_rotate_center_corn(count_moves,history,l,f,r,b,u,d,&doub,search);
+                search_and_rotate_center_corn(count_moves,history,l,f,r,b,u,d,&count,f[2][2]);
                 break;
             }
         }
         if(cheak_center(2,l,f,r,b,u,d)){break;}
-        turn_cube(count_moves,history,'d',l,f,r,b,u,d);
+        if(down_cnt == 3) {
+            turn_cube(count_moves,history,'l',l,f,r,b,u,d);
+            continue;
+        }   
+        
+        turn_cube(count_moves,history,'d',l,f,r,b,u,d);  
+        down_cnt++;
     }
     
 }
@@ -1428,8 +1434,9 @@ void solve_center_rib(int*count_moves, char* history, char l[SIZE][SIZE], char f
     int steps = 0;
     int doub;
     int cnt = 0;
+    int down_cnt = 0;
     
-    for(int j=0;j<6;j++){
+    for(int j=0;j < 8;j++){
         count = 0;
         steps = 0;
         search = f[2][2];
@@ -1438,44 +1445,58 @@ void solve_center_rib(int*count_moves, char* history, char l[SIZE][SIZE], char f
         cntNotOneColor(f,search,&count,1);
         
         while(count!=0){
-            
+            // printf("count!=0\n");
+            down_cnt = 0;
             search_and_rotate_center_rib(count_moves,history,l,f,r,b,u,d,&count,search);
             if(count!=0 && cnt_edge!=3 && steps!=4){
+                // printf("first\n");
                 cnt_edge++;
                 turn_cube(count_moves,history,'r',l,f,r,b,u,d);
                 turn_cube(count_moves,history,'d',l,f,r,b,u,d);
                 turn_cube(count_moves,history,'l',l,f,r,b,u,d);
+                
             }
             else if(count!=0 && cnt_edge==3 && steps!=4){
+                // printf("step !4\n");
                 turn_cube(count_moves,history,'d',l,f,r,b,u,d);
                 cnt = 0;
                 steps = 0;
                 do{
                     cntNotOneColor(f,f[2][2],&cnt,1);
-                    if(cnt==0){
+                    if(cnt == 0){
                         turn_cube(count_moves,history,'r',l,f,r,b,u,d);
                         steps++;
                     }
                     
                 }
-                while(cnt==0 && steps!=4 );//
+                while(cnt == 0 && steps != 4 );//
                 
                 doub = count;
                 search_and_rotate_center_rib(count_moves,history,l,f,r,b,u,d,&doub,search);
                 turn_cube(count_moves,history,'u',l,f,r,b,u,d);
             }
             if(steps == 4){
-                                
+                // printf("step 4\n");               
                 doub = count;
                 search_and_rotate_center_rib(count_moves,history,l,f,r,b,u,d,&doub,search);
                 turn_cube(count_moves,history,'d',l,f,r,b,u,d);
-                search_and_rotate_center_rib(count_moves,history,l,f,r,b,u,d,&doub,search);
+                // printf("doub = %d, count = %d\n",doub,count);
+                search_and_rotate_center_rib(count_moves,history,l,f,r,b,u,d,&count,f[2][2]);
                 break;
+                
             }
         }
         if(cheak_center(1,l,f,r,b,u,d)){break;}
         
-        turn_cube(count_moves,history,'d',l,f,r,b,u,d);
+        
+        if(down_cnt == 3) {
+            turn_cube(count_moves,history,'l',l,f,r,b,u,d);
+            continue;
+        }   
+        
+        turn_cube(count_moves,history,'d',l,f,r,b,u,d);  
+        down_cnt++;
+       
     }
     
 }
@@ -1583,7 +1604,8 @@ void solve(int*count_moves, char* history, char l[SIZE][SIZE], char f[SIZE][SIZE
     /* подготовка к сборке 3х3 */
     solve_center_rib(count_moves,history,l,f,r,b,u,d);  // cборка центрального креста
     solve_center_corn(count_moves,history,l,f,r,b,u,d); // сборка центрального X
-    solve_ribs(count_moves,history,l,f,r,b,u,d);// тут паритеты , сборка ребер
+    solve_ribs(count_moves,history,l,f,r,b,u,d);// тут паритеты , сборка ребер /// ПРОВЕРИТЬ ПОСЛЕДНИИ РЕБРА
+
     /* сборка 3х3 */
     solve_white_rib(count_moves,history,l,f,r,b,u,d); //установка нижних белых ребер
     solve_corners(count_moves,history,l,f,r,b,u,d); // утсановка нижних белых углов
@@ -1673,69 +1695,78 @@ void printRubiksCube(char left[SIZE][SIZE], char front[SIZE][SIZE], char right[S
     printMatrix(down);
     printf("\n");
 }
+/* Сборка ребер */
 void solve_ribs(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int count;
     char search_f;
     char search_u;
-    int cnt_edge;
     int steps;
     int doub;
     int num = 0;
     int count_cheak=1;
     int sequence_edges[12];
+
+    /* оптимизация + проверка на то, что кубик не нужно собирать в данном случае*/
+    if(cheak_ribs(sequence_edges,l,f,r,b,u,d) == 0){ return; } /* все собрано */
+
     while(1){
         count = 0;
         steps = 0;
         search_f = f[0][2];
         search_u = u[4][2];
-        cnt_edge = 0;
+
+        /* Сколько неправильных кубиков на данном ребре? -> count */
         cntNotOneColor_rib(f,u,search_f,search_u,&count);
-        count_cheak=count;
+        count_cheak = count;
         
-        while(count!=0){
+        /* работа с одним ребром*/
+        while(count != 0){
             
-            change_ribs(count_moves,history,0,1,l,f,r,b,u,d);
+            change_ribs(count_moves,history,0,1,l,f,r,b,u,d); /* нашли нужный кубик и поставили на место*/
             
-            
-            if((f[4][1]==search_f && d[0][1]==search_u) || (f[4][3]==search_f && d[0][3]==search_u)){
+            /* если нижнии кубики необходимо перевернуть верх ногами, то делаем повороты*/
+            if((f[4][1] == search_f && d[0][1] == search_u) || (f[4][3] == search_f && d[0][3] == search_u)){
                 D(count_moves,history,l,f,r,b,u,d);
                 U_(count_moves,history,l,f,r,b,u,d);
                 R(count_moves,history,l,f,r,b,u,d);
                 F(count_moves,history,l,f,r,b,u,d);
                 U(count_moves,history,l,f,r,b,u,d);
             }
-            if(f[4][1]==search_u && d[0][1]==search_f){
-                num=1;
+            if(f[4][1] == search_u && d[0][1] == search_f){
+                num = 1;
             }
-            else if(f[4][3]==search_u && d[0][3]==search_f){
-                num=3;
+            else if(f[4][3] == search_u && d[0][3] == search_f){
+                num = 3;
             }
             
             change_ribs(count_moves,history,num,2,l,f,r,b,u,d);
             
             count--;
-            if(count!=0){
+            if(count != 0){
                 turn_cube(count_moves,history,'d',l,f,r,b,u,d);
                 turn_cube(count_moves,history,'l',l,f,r,b,u,d);
                 
             }
             
         }
+
         int cheak = cheak_ribs(sequence_edges,l,f,r,b,u,d);
-        
-        
+                
         /* здесь что-то странное*/
-        if(cheak == 0){break;}
+        if(cheak == 0){break;} /*ребра все собраны*/
+
+        /* 1 или 2 ребра не собраны*/
         else if(cheak == 1){
             last_ribs(count_moves,history,sequence_edges,l,f,r,b,u,d);
             break;
         }
-        else if(cheak == 2 && count_cheak==0){
-            if(steps<3|| steps>4 && steps<7|| steps>8 && steps<11){
+        /* не собраны более, чем 2 ребра -> поворачиваем куб*/
+        else if(cheak == 2 && count_cheak == 0){
+            if(steps < 3|| steps > 4 && steps < 7|| steps > 8 && steps < 11){
                 turn_cube(count_moves,history,'u',l,f,r,b,u,d);
                 steps++;
             }
-            if(steps==4 || steps==7){
+            if(steps == 4 || steps == 7){
                 turn_cube(count_moves,history,'l',l,f,r,b,u,d);
                 steps++;
             }
@@ -1743,26 +1774,26 @@ void solve_ribs(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][S
     }
 }
 void last_ribs(int*count_moves,char* history,int* sequence_edges, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
-    int k =0;
-    int j =0;
+    int k = 0;
+    int j = 0;
     //char*edges[][5]={f,d, f,r, f,l, r,b, r,u, r,d, u,b, l,b, b,d, l,d, l,u, f,u};
     int save = 0;
    
-  
+    /* Постановка ребра на верх фронта*/
     if(sequence_edges[k] != -1){//up
-        j=sequence_edges[k];
-        if(j==0){F(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);}
-        else if(j==2){F_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==4){F(count_moves,history,l,f,r,b,u,d);} 
-        else if(j==6){R_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==8){U_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==10){R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==12){U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==14){L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);}
-        else if(j==16){B(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==18){L_(count_moves,history,l,f,r,b,u,d);L_(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);}
-        else if(j==20){U(count_moves,history,l,f,r,b,u,d);}
-        else if(j==22){ //do nothing
+        j = sequence_edges[k];
+        if(j == 0){F(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 2){F_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 4){F(count_moves,history,l,f,r,b,u,d);} 
+        else if(j == 6){R_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 8){U_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 10){R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 12){U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 14){L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 16){B(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 18){L_(count_moves,history,l,f,r,b,u,d);L_(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 20){U(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 22){ //do nothing
         }
         k++;
     }
@@ -1770,71 +1801,168 @@ void last_ribs(int*count_moves,char* history,int* sequence_edges, char l[SIZE][S
     save = j;
     cheak_ribs(sequence_edges,l,f,r,b,u,d);
     
-    k=0;
-    if(sequence_edges[k]==save){k++;}
-    if(sequence_edges[k]!=-1){//down
-        j=sequence_edges[k];
-        if(j==0){//do nothing
+    /* Если есть второе не собраное ребро, то ставим его вниз фронта*/
+    k = 0;
+    if(sequence_edges[k] == save){k++;}
+    if(sequence_edges[k] != -1){//down
+        j = sequence_edges[k];
+        if(j == 0){//do nothing
         }
-        else if(j==2){R_(count_moves,history,l,f,r,b,u,d); D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==4){L(count_moves,history,l,f,r,b,u,d); D(count_moves,history,l,f,r,b,u,d);} 
-        else if(j==6){R(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==8){R_(count_moves,history,l,f,r,b,u,d);R_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==10){D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==12){B_(count_moves,history,l,f,r,b,u,d);B_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==14){L_(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
-        else if(j==16){D(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
-        else if(j==18){D(count_moves,history,l,f,r,b,u,d);}
-        else if(j==20){L(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
-        else if(j==22){F(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 2){R_(count_moves,history,l,f,r,b,u,d); D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 4){L(count_moves,history,l,f,r,b,u,d); D(count_moves,history,l,f,r,b,u,d);} 
+        else if(j == 6){R(count_moves,history,l,f,r,b,u,d); D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 8){R_(count_moves,history,l,f,r,b,u,d); R_(count_moves,history,l,f,r,b,u,d); D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 10){D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 12){B_(count_moves,history,l,f,r,b,u,d); B_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d); D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 14){L_(count_moves,history,l,f,r,b,u,d); D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 16){D(count_moves,history,l,f,r,b,u,d); D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 18){D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 20){L(count_moves,history,l,f,r,b,u,d); L(count_moves,history,l,f,r,b,u,d); D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 22){F(count_moves,history,l,f,r,b,u,d); F(count_moves,history,l,f,r,b,u,d);}
         k++;
     }
-    //if...then...
     
-    for(int k = 0;k<2;k++){
-        if((u[4][1]==f[4][2] || u[4][1]==d[0][2]) && (u[4][1]==f[4][3] || u[4][1]==d[0][3]) && (f[0][1]==d[0][2] || f[0][1]==f[4][2])&& (f[0][1]==d[0][3] || f[0][1]==f[4][3])){
-            //3
-            // turn_cube(&count_moves,history'l',l,f,r,b,u,d);
-            U_(count_moves,history,l,f,r,b,u,d);L_(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);
+    for(int k = 0; k < 2; k++){
+        /* необходимо привести к другому виду -> перенос ребра*/
+        if((u[4][1] == f[4][2] || u[4][1] == d[0][2]) && (u[4][1] == f[4][3] || u[4][1] == d[0][3]) && (f[0][1] == d[0][2] || f[0][1] == f[4][2])&& (f[0][1] == d[0][3] || f[0][1] == f[4][3])){
+            U_(count_moves,history,l,f,r,b,u,d);
+            L_(count_moves,history,l,f,r,b,u,d);
+            B(count_moves,history,l,f,r,b,u,d);
             turn_cube(count_moves,history,'u',l,f,r,b,u,d);
         }
-        if((u[4][3]==f[4][2] || u[4][3]==d[0][2]) && (u[4][3]==f[4][1] || u[4][3]==d[0][1]) && (f[0][3]==d[0][2] || f[0][3]==f[4][2])&& (f[0][3]==d[0][1] || f[0][3]==f[4][1])){
-            U_(count_moves,history,l,f,r,b,u,d);L_(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);
+        /* необходимо привести к другому виду -> перенос ребра*/
+        else if((u[4][3] == f[4][2] || u[4][3] == d[0][2]) && (u[4][3] == f[4][1] || u[4][3] == d[0][1]) && (f[0][3] == d[0][2] || f[0][3] == f[4][2])&& (f[0][3] == d[0][1] || f[0][3] == f[4][1])){
+            U_(count_moves,history,l,f,r,b,u,d);
+            L_(count_moves,history,l,f,r,b,u,d);
+            B(count_moves,history,l,f,r,b,u,d);
             turn_cube(count_moves,history,'u',l,f,r,b,u,d);
         }
-        if(u[4][1]==d[0][1] && f[0][1]==f[4][1]&& f[0][1]==f[4][2]){
-            //1
-            R2(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);R2_(count_moves,history,l,f,r,b,u,d);
+        /* Возрастающая позиция*/
+        if((u[4][1] == d[0][1] || u[4][1] == f[4][1]) && (f[0][1] == f[4][1] || f[0][1] == d[0][1])&& (f[0][1] == f[4][2] || f[0][1] == d[0][2])){
+            
+            R2(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
         }
-        if((u[4][3]==d[0][2] || u[4][3]==f[4][2])&& (u[4][3]==d[0][3] || u[4][3]==f[4][3]) && (f[0][3]==f[4][2] || f[0][3]==d[0][2])&& (f[0][3]==f[4][3] || f[0][3]==d[0][3])){
-            //2
-            L2_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);L2(count_moves,history,l,f,r,b,u,d);
-        }
-        if(u[4][2]==f[4][1] && u[4][2]==f[4][3] && f[0][2]==f[4][1] && f[0][2]==f[4][3]){
-            R2(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);R2_(count_moves,history,l,f,r,b,u,d);
-            L2_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);L2(count_moves,history,l,f,r,b,u,d);
-        }
+        /* Падающая позиция*/
+        if((u[4][3] == d[0][2] || u[4][3] == f[4][2]) && (u[4][3] == d[0][3] || u[4][3] == f[4][3]) && (f[0][3] == f[4][2] || f[0][3] == d[0][2])&& (f[0][3] == f[4][3] || f[0][3] == d[0][3])){
 
-        if(u[4][1]==f[0][2] && u[4][3]==f[0][2]&& f[0][1]==u[4][2] && f[0][3]==u[4][2] &&  f[4][1]==d[0][2] && f[4][3]==d[0][2]&& d[0][1]==f[4][2] && d[0][3]==f[4][2]){
-            M(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);M_(count_moves,history,l,f,r,b,u,d);
+            L2_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            L2(count_moves,history,l,f,r,b,u,d);
         }
-        if(u[4][1]==u[4][3] && f[0][1]==f[0][3] && (f[4][2]==u[4][1] || d[0][2]==u[4][1])&&((f[4][2]==f[0][1] || d[0][2]==f[0][1]))){
-            R2(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);R2_(count_moves,history,l,f,r,b,u,d);
-            L2_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);L2(count_moves,history,l,f,r,b,u,d);
+        if(u[4][2] == f[4][1] && u[4][2] == f[4][3] && f[0][2] == d[0][1] && f[0][2] == d[0][3]){
+
+            R2(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
+            L2_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            L2(count_moves,history,l,f,r,b,u,d);
+        }
+        else if(u[4][2] == d[0][1] && u[4][2] == d[0][3] && f[0][2] == f[4][1] && f[0][2] == f[4][3]){ /* Добавлен дополнительная проверка. Если выполнилось первое, то втрое проверять не надо*/
+
+            R2(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
+            L2_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            L2(count_moves,history,l,f,r,b,u,d);
+        }
+        /*центральные кубики у двух ребер необходимо повернуть*/
+        if(u[4][1] == f[0][2] && u[4][3] == f[0][2] && f[0][1] == u[4][2] && f[0][3] == u[4][2] &&  f[4][1] == d[0][2] && f[4][3] == d[0][2]&& d[0][1] == f[4][2] && d[0][3] == f[4][2]){
+            
+            M(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            M_(count_moves,history,l,f,r,b,u,d);
+        }
+        if(u[4][1] == u[4][3] && f[0][1] == f[0][3] && (f[4][2] == u[4][1] || d[0][2] == u[4][1]) && (f[4][2] == f[0][1] || d[0][2] == f[0][1])){
+            R2(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
+            L2_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            L2(count_moves,history,l,f,r,b,u,d);
             turn_cube(count_moves,history,'u',l,f,r,b,u,d);
         }
-        if(u[4][1]==f[0][2] && u[4][3]==f[0][2]&& f[0][1]==u[4][2] && f[0][3]==u[4][2]){
+        /*Одно ребро*/
+        if(u[4][1] == f[0][2] && u[4][3] == f[0][2]&& f[0][1] == u[4][2] && f[0][3] == u[4][2]){
             //func hard
-            R2_(count_moves,history,l,f,r,b,u,d);R2_(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);L2(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);
-            R2_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);R2(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);R2(count_moves,history,l,f,r,b,u,d);
-            F(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);L2_(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);R2_(count_moves,history,l,f,r,b,u,d);R2_(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
+            B(count_moves,history,l,f,r,b,u,d);
+            B(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            L2(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            R2(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            R2(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            L2_(count_moves,history,l,f,r,b,u,d);
+            B(count_moves,history,l,f,r,b,u,d);
+            B(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
         }
         
-        F(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);
-        if(u[0][1]==b[0][2] && u[0][3]==b[0][2]){turn_cube(count_moves,history,'d',l,f,r,b,u,d);}
+        F(count_moves,history,l,f,r,b,u,d);
+        F(count_moves,history,l,f,r,b,u,d);
+
+        /* Если теперь осталось одно ребро то его необходимо переместить ближе*/
+        if(u[0][1] == b[0][2] && u[0][3] == b[0][2]){
+            turn_cube(count_moves,history,'d',l,f,r,b,u,d);
+        }
     }
     
 }
+
+/* какое количество несобранных ребер осталось*/
 int cheak_ribs(int* sequence_edges, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int count_rib = 0;
     int size = 4;
@@ -1889,11 +2017,15 @@ int cheak_ribs(int* sequence_edges, char l[SIZE][SIZE], char f[SIZE][SIZE],char 
     char search_2;
     int cnt = 0;
     int j = 0;
-    for(int m=0;m<12;m++){
-        sequence_edges[m]=-1;
+
+    /*заменить на memcpy*/
+    for(int m = 0; m < 12; m++){
+        sequence_edges[m] = -1;
     }
-    int k =0;
-    for(;j<24;j+=2){
+
+    int k = 0;
+    for(; j < 24 ; j += 2){
+
         mas1=Bigmas[j];
         mas2=Bigmas[j+1];
         edge1=(char(*)[5])(edges[j]);
@@ -1901,30 +2033,30 @@ int cheak_ribs(int* sequence_edges, char l[SIZE][SIZE], char f[SIZE][SIZE],char 
         search_1=edge1[mas1[4]][mas1[5]];
         search_2=edge2[mas2[4]][mas2[5]];
         cnt=0;
-        for(int i=0;i<size;i+=2){
-            if(edge1[mas1[i]][mas1[i+1]]!=search_1 || edge2[mas2[i]][mas2[i+1]]!=search_2){
-                // if(edge1[mas1[i]][mas1[i+1]]!=search_2 || edge2[mas2[i]][mas2[i+1]]!=search_1 ){
-                //     cnt++;
-                //     break;
-                // }
-                cnt++;break;
+
+        for(int i = 0; i < size; i += 2){
+            if(edge1[mas1[i]][mas1[i+1]] != search_1 || edge2[mas2[i]][mas2[i+1]] != search_2){
+                cnt++;
+                break;
             }
         }
-        if(cnt>0){
+        if(cnt > 0){
             count_rib++;
-            sequence_edges[k]=j;
+            sequence_edges[k] = j;
             k++;
         }
     }
-    if(count_rib>2){return 2;}
-    if(count_rib == 0){return 0;}
+    if(count_rib > 2){return 2;}
+    if(count_rib  ==  0){return 0;}
     return 1;
 }
+
+/* сколько в ребре не хватает кубиков с нужными цветами: 0 , 1 , 2 */
 void cntNotOneColor_rib(char f [SIZE][SIZE],char u[SIZE][SIZE],char search_f,char search_u,int* count){
     int size = 4;
     int mas_f[4]={0,1,0,3};
     int mas_u[4]={4,1,4,3};
-    for(int i=0;i<size;i+=2){
+    for(int i = 0; i < size; i += 2){
         if(f[mas_f[i]][mas_f[i+1]]!=search_f || u[mas_u[i]][mas_u[i+1]]!=search_u){
             if(f[mas_f[i]][mas_f[i+1]]!=search_u || u[mas_u[i]][mas_u[i+1]]!=search_f ){
                 (*count)++;
@@ -1941,40 +2073,42 @@ void cntNotOneColor_rib(char f [SIZE][SIZE],char u[SIZE][SIZE],char search_f,cha
 //rotate if rib isnt full
 //if 10_ribs full then
 
+/* Постановка кубика с найденного ребра на рассматриваемое */
 void change_ribs(int*count_moves,char* history,int num_in_rib, int var,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     //char*edges[][5]={f,d,f,r,f,l,r,b,r,u,r,d,u,b,l,b,b,d,l,d,l,u,f,u};
     int cnt = 0;
     int steps = 0;
     int j;
     
-    j = search_rib_for_change(count_moves,history,var,l,f,r,b,u,d);
+    j = search_rib_for_change(count_moves,history,var,l,f,r,b,u,d); // поиск грани для изменения
     if(var == 1){
-        if(j==0){//do nothing
+        if(j == 0){//do nothing
         }
-        else if(j==2){R_(count_moves,history,l,f,r,b,u,d); D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==4){L(count_moves,history,l,f,r,b,u,d); D(count_moves,history,l,f,r,b,u,d);} 
-        else if(j==6){R(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==8){R_(count_moves,history,l,f,r,b,u,d);R_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==10){D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==12){B_(count_moves,history,l,f,r,b,u,d);B_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==14){L_(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
-        else if(j==16){D(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
-        else if(j==18){D(count_moves,history,l,f,r,b,u,d);}
-        else if(j==20){L(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 2){R_(count_moves,history,l,f,r,b,u,d); D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 4){L(count_moves,history,l,f,r,b,u,d); D(count_moves,history,l,f,r,b,u,d);} 
+        else if(j == 6){R(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 8){R_(count_moves,history,l,f,r,b,u,d);R_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 10){D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 12){B_(count_moves,history,l,f,r,b,u,d);B_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 14){L_(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 16){D(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 18){D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 20){L(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
 
     }
     if(var == 2){
-        if(j==2){//do nothing
+        if(j == 2){//do nothing
         }
-        else if(j==4){ D(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);} 
-        else if(j==6){R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
-        else if(j==8){R_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==10){R(count_moves,history,l,f,r,b,u,d);}
-        else if(j==12){B_(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
-        else if(j==14){B_(count_moves,history,l,f,r,b,u,d);B_(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
-        else if(j==16){B(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
-        else if(j==18){D(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==20){U(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);R_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 4){ D(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);} 
+        else if(j == 6){R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 8){R_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 10){R(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 12){B_(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 14){B_(count_moves,history,l,f,r,b,u,d);B_(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 16){B(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 18){D(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 20){U(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);R_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
+        
         if(num_in_rib == 1){
             L2_(count_moves,history,l,f,r,b,u,d);
             U(count_moves,history,l,f,r,b,u,d);
@@ -1992,6 +2126,7 @@ void change_ribs(int*count_moves,char* history,int num_in_rib, int var,char l[SI
     }
     
 }
+/* var == 1 : Поиск грани, на которой есть кубик с переданными 2мя цветами*/
 int search_rib_for_change(int*count_moves,char* history,int var, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int size = 4;
 
@@ -2040,59 +2175,50 @@ int search_rib_for_change(int*count_moves,char* history,int var, char l[SIZE][SI
     
     char search_1;
     char search_2;
-    int cnt = 0;
     int j = 0;
 
-    if(var==1){
-        char search_f=f[0][2];
-        char search_u=u[4][2];
-        for(;j<22;j+=2){
-            mas1=Bigmas[j];
-            mas2=Bigmas[j+1];
-            edge1=(char(*)[5])(edges[j]);
-            edge2=(char(*)[5])(edges[j+1]);
+    if(var == 1){
+
+        char search_f = f[0][2];
+        char search_u = u[4][2];
+
+        for(; j < 22; j += 2){
+            mas1 = Bigmas[j];
+            mas2 = Bigmas[j+1];
+            edge1 = (char(*)[5])(edges[j]);
+            edge2 = (char(*)[5])(edges[j+1]);
             
-            cnt=0;
-            for(int i=0;i<size;i+=2){
-                if((edge1[mas1[i]][mas1[i+1]]==search_u && edge2[mas2[i]][mas2[i+1]]==search_f) || (edge1[mas1[i]][mas1[i+1]]==search_f && edge2[mas2[i]][mas2[i+1]]==search_u)){
-                    cnt++;
-                    break;
+            for(int i = 0;i < size;i += 2){
+
+                if((edge1[mas1[i]][mas1[i+1]] == search_u && edge2[mas2[i]][mas2[i+1]] == search_f) || (edge1[mas1[i]][mas1[i+1]] == search_f && edge2[mas2[i]][mas2[i+1]] == search_u)){
+                    return j;
                 }
             }
-            if(cnt>0){
-                break;
-            }
+            
         }
-        
     }
 
-    if(var==2){
-        for(j=2;j<22;j+=2){
-            mas1=Bigmas[j];
-            mas2=Bigmas[j+1];
-            edge1=(char(*)[5])(edges[j]);
-            edge2=(char(*)[5])(edges[j+1]);
-            search_1=edge1[mas1[4]][mas1[5]];
-            search_2=edge2[mas2[4]][mas2[5]];
-            cnt=0;
-            for(int i=0;i<size;i+=2){
-                if(edge1[mas1[i]][mas1[i+1]]!=search_1 || edge2[mas2[i]][mas2[i+1]]!=search_2){
-                    // if(edge1[mas1[i]][mas1[i+1]]!=search_2 || edge2[mas2[i]][mas2[i+1]]!=search_1){
-                    //     cnt++;
-                    //     break;
-                    // }
-                    cnt++;
-                    break;
+    if(var == 2){
+
+        for(j = 2;j < 22;j += 2){
+
+            mas1 = Bigmas[j];
+            mas2 = Bigmas[j+1];
+            edge1 = (char(*)[5])(edges[j]);
+            edge2 = (char(*)[5])(edges[j+1]);
+            search_1 = edge1[mas1[4]][mas1[5]];
+            search_2 = edge2[mas2[4]][mas2[5]];
+            
+            for(int i = 0;i < size;i += 2){
+
+                if(edge1[mas1[i]][mas1[i+1]] != search_1 || edge2[mas2[i]][mas2[i+1]] != search_2){
+                    return j;
                 }
             }
-            if(cnt>0){
-                break;
-            }
+            
         }
-        
     }
     return j;
-    
 }
 
 void solve_white_rib(int*count_moves,char* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
