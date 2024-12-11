@@ -635,7 +635,7 @@ int main(){
                            {'Y', 'Y', 'Y', 'Y', 'Y'}};
     
 
-    //Создаём новую историю сохранений
+    //Ð¡Ð¾Ð·Ð´Ð°ÑÐ¼ Ð½Ð¾Ð²ÑÑ Ð¸ÑÑÐ¾ÑÐ¸Ñ ÑÐ¾ÑÑÐ°Ð½ÐµÐ½Ð¸Ð¹
     struct history* history = init_history();
 
     int count_moves = 0;
@@ -660,9 +660,9 @@ int main(){
 
     shaderProgram->texture_slot0_uniform = glGetUniformLocation(shaderProgram->ID, TEXTURE_SLOT0_UNIFORM);
     glUniform1i(shaderProgram->texture_slot0_uniform, 0);
-    glEnable(GL_BLEND);   // neeeeee ������������ 2
+    glEnable(GL_BLEND);   // neeeeee ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    /* ������� */
+    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
     object* CUBE = create_object(1);
 
     object* button_u = create_object(0);
@@ -785,7 +785,7 @@ int main(){
                 button_back->active_bot = 1;
                 if(pressed){
                     active = 1;
-                    //���������� ���������
+                    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     
                     if(count_moves!=1){
                         if(status_cube==0){status_cube=count_moves;}
@@ -808,7 +808,7 @@ int main(){
                         view_cube_from_history(GET_NEXT,history,left,front,right,back,up,down);
                     
                     }
-                    //��������� ��������� ������
+                    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 }
             }
             else if(where_cur_bot(window,button_begin)){
@@ -816,7 +816,7 @@ int main(){
                 button_begin->active_bot = 1;
                 if(pressed){
                     active = 1;
-                    //������ ��������� ������
+                    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     if(count_moves!=0){
                         status_cube=1;
                         view_cube_from_history(GET_HEAD,history,left,front,right,back,up,down);
@@ -828,7 +828,7 @@ int main(){
                 button_end->active_bot = 1;
                 if(pressed){
                     active = 1;
-                    //��������� ��������� ������
+                    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     if(count_moves!=0){
                         status_cube=count_moves;
                         view_cube_from_history(GET_TAIL,history,left,front,right,back,up,down);
@@ -924,7 +924,7 @@ int main(){
         glfwPollEvents();
     }
 
-    //Очистка истории и освобождение памяти
+    //ÐÑÐ¸ÑÑÐºÐ° Ð¸ÑÑÐ¾ÑÐ¸Ð¸ Ð¸ Ð¾ÑÐ²Ð¾Ð±Ð¾Ð¶Ð´ÐµÐ½Ð¸Ðµ Ð¿Ð°Ð¼ÑÑÐ¸
     clear_history(history);
     free(history);
 
@@ -1206,7 +1206,7 @@ int where_cursor(GLFWwindow* window){
     for( int i = 0;i<SIZE;i++){
       
         for(int j = 0; j<SIZE; j++){
-             /* � ��������� ����������� �� ����� */
+             /* ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ */
             if(vertices[shift+(i*SIZE+j)*24 + 3*6]<=mouse_x && mouse_x <= vertices[shift+(i*SIZE+j)*24 + 1*6] && vertices[shift+(i*SIZE+j)*24 + 3*6 + 1]<= mouse_y && mouse_y <=vertices[shift+(i*SIZE+j)*24 + 1*6 + 1]){
                 return i*SIZE+j;
             }
@@ -1271,7 +1271,7 @@ void one_square(int i,char color){
     else if(color == 'Y'){
         c1 = yl1;c2 = yl2; c3 = yl3;
     }
-     /* � ��������� ����������� �� ����� */
+     /* ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ */
     for(int j = 0;j<4;j++){
         vertices[i + j*6 + 3]=c1;
         vertices[i + j*6 + 4]=c2;
@@ -1290,8 +1290,8 @@ void mas_to_color(char mas[SIZE][SIZE],char edge){
     }
     for(;i<SIZE;i++){
         for(int j = 0; j<SIZE; j++){
-            /* � ��������� ����������� �� ����� */
-            /* ���������� ����� �������� */
+            /* ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ */
+            /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
             if(mas[i][j]=='R' && (vertices[shift + (i*SIZE+j)*24+3]!=r1 || vertices[shift + (i*SIZE+j)*24+4]!=r2 || vertices[shift + (i*SIZE+j)*24+5]!=r3)){
                 one_square(shift + (i*SIZE+j)*24,'R');
             }
@@ -1320,7 +1320,7 @@ void turn_cube(int* count_moves,struct history* history,char orient, char l[SIZE
     char temp;
     if(orient == 'u'){
         for(int k = 0; k < SIZE; k++){
-            /* � ��������� ����������� �� ����� 4-k */
+            /* ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 4-k */
             for (int i = 0; i < SIZE; i++) {
                 temp = u[i][k];
                 u[i][k] = f[i][k];
@@ -1360,7 +1360,7 @@ void turn_cube(int* count_moves,struct history* history,char orient, char l[SIZE
     }
     else if(orient == 'd'){
         for(int k = 0; k < SIZE; k++){
-            /* � ��������� ����������� �� ����� 4-k */
+            /* ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 4-k */
             for (int i = 0; i < SIZE; i++) {
                 temp = u[i][k];
                 u[i][k] = b[4-i][4-k];
@@ -1381,8 +1381,9 @@ void solve_center_corn(int*count_moves,struct history* history,char l[SIZE][SIZE
     int cnt_edge = 0;
     int steps = 0;
     int doub;
+    int down_cnt = 0;
     
-    for(int j=0;j<6;j++){
+    for(int j=0; j<8 ;j++){
         count = 0;
         steps = 0;
         search = f[2][2];
@@ -1390,8 +1391,7 @@ void solve_center_corn(int*count_moves,struct history* history,char l[SIZE][SIZE
         
         cntNotOneColor(f,search,&count,2);
         while(count!=0){
-            
-                        
+                      
             search_and_rotate_center_corn(count_moves,history,l,f,r,b,u,d,&count,search);
             if(count!=0 && cnt_edge!=3 && steps!=4){
                 cnt_edge++;
@@ -1424,12 +1424,18 @@ void solve_center_corn(int*count_moves,struct history* history,char l[SIZE][SIZE
                 doub = count;
                 search_and_rotate_center_corn(count_moves,history,l,f,r,b,u,d,&doub,search);
                 turn_cube(count_moves,history,'d',l,f,r,b,u,d);
-                search_and_rotate_center_corn(count_moves,history,l,f,r,b,u,d,&doub,search);
+                search_and_rotate_center_corn(count_moves,history,l,f,r,b,u,d,&count,f[2][2]);
                 break;
             }
         }
         if(cheak_center(2,l,f,r,b,u,d)){break;}
-        turn_cube(count_moves,history,'d',l,f,r,b,u,d);
+        if(down_cnt == 3) {
+            turn_cube(count_moves,history,'l',l,f,r,b,u,d);
+            continue;
+        }   
+        
+        turn_cube(count_moves,history,'d',l,f,r,b,u,d);  
+        down_cnt++;
     }
     
 }
@@ -1440,8 +1446,9 @@ void solve_center_rib(int*count_moves, struct history* history, char l[SIZE][SIZ
     int steps = 0;
     int doub;
     int cnt = 0;
+    int down_cnt = 0;
     
-    for(int j=0;j<6;j++){
+    for(int j=0;j < 8;j++){
         count = 0;
         steps = 0;
         search = f[2][2];
@@ -1450,44 +1457,58 @@ void solve_center_rib(int*count_moves, struct history* history, char l[SIZE][SIZ
         cntNotOneColor(f,search,&count,1);
         
         while(count!=0){
-            
+            // printf("count!=0\n");
+            down_cnt = 0;
             search_and_rotate_center_rib(count_moves,history,l,f,r,b,u,d,&count,search);
             if(count!=0 && cnt_edge!=3 && steps!=4){
+                // printf("first\n");
                 cnt_edge++;
                 turn_cube(count_moves,history,'r',l,f,r,b,u,d);
                 turn_cube(count_moves,history,'d',l,f,r,b,u,d);
                 turn_cube(count_moves,history,'l',l,f,r,b,u,d);
+                
             }
             else if(count!=0 && cnt_edge==3 && steps!=4){
+                // printf("step !4\n");
                 turn_cube(count_moves,history,'d',l,f,r,b,u,d);
                 cnt = 0;
                 steps = 0;
                 do{
                     cntNotOneColor(f,f[2][2],&cnt,1);
-                    if(cnt==0){
+                    if(cnt == 0){
                         turn_cube(count_moves,history,'r',l,f,r,b,u,d);
                         steps++;
                     }
                     
                 }
-                while(cnt==0 && steps!=4 );//
+                while(cnt == 0 && steps != 4 );//
                 
                 doub = count;
                 search_and_rotate_center_rib(count_moves,history,l,f,r,b,u,d,&doub,search);
                 turn_cube(count_moves,history,'u',l,f,r,b,u,d);
             }
             if(steps == 4){
-                                
+                // printf("step 4\n");               
                 doub = count;
                 search_and_rotate_center_rib(count_moves,history,l,f,r,b,u,d,&doub,search);
                 turn_cube(count_moves,history,'d',l,f,r,b,u,d);
-                search_and_rotate_center_rib(count_moves,history,l,f,r,b,u,d,&doub,search);
+                // printf("doub = %d, count = %d\n",doub,count);
+                search_and_rotate_center_rib(count_moves,history,l,f,r,b,u,d,&count,f[2][2]);
                 break;
+                
             }
         }
         if(cheak_center(1,l,f,r,b,u,d)){break;}
         
-        turn_cube(count_moves,history,'d',l,f,r,b,u,d);
+        
+        if(down_cnt == 3) {
+            turn_cube(count_moves,history,'l',l,f,r,b,u,d);
+            continue;
+        }   
+        
+        turn_cube(count_moves,history,'d',l,f,r,b,u,d);  
+        down_cnt++;
+       
     }
     
 }
@@ -1591,22 +1612,23 @@ void search_and_rotate_center_rib(int*count_moves, struct history* history, char
     }
 }
 
+
 void solve(int*count_moves, struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
-    /* ���������� � ������ 3�3 */
-    solve_center_rib(count_moves,history,l,f,r,b,u,d);  // c����� ������������ ������
-    solve_center_corn(count_moves,history,l,f,r,b,u,d); // ������ ������������ X
-    solve_ribs(count_moves,history,l,f,r,b,u,d);// ��� �������� , ������ �����
-    /* ������ 3�3 */
-    solve_white_rib(count_moves,history,l,f,r,b,u,d); //��������� ������ ����� �����
-    solve_corners(count_moves,history,l,f,r,b,u,d); // ��������� ������ ����� �����
-    solve_right_place_for_rib(count_moves,history,l,f,r,b,u,d); // ���������� ������� �����
-    yellow_ribs(count_moves,history,l,f,r,b,u,d); //��������� ����� ����� �� ������ �����
-    four_edges_color(count_moves,history,l,f,r,b,u,d); // ������ ����� �������, 4 ������ ���� �������
+    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 3ï¿½3 */
+    solve_center_rib(count_moves,history,l,f,r,b,u,d);  // cï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    solve_center_corn(count_moves,history,l,f,r,b,u,d); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ X
+    solve_ribs(count_moves,history,l,f,r,b,u,d);// ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ , ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 3ï¿½3 */
+    solve_white_rib(count_moves,history,l,f,r,b,u,d); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+    solve_corners(count_moves,history,l,f,r,b,u,d); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+    solve_right_place_for_rib(count_moves,history,l,f,r,b,u,d); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+    yellow_ribs(count_moves,history,l,f,r,b,u,d); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+    four_edges_color(count_moves,history,l,f,r,b,u,d); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, 4 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     last_corners_part1(count_moves,history,l,f,r,b,u,d);
     last_corners_part2(count_moves,history,l,f,r,b,u,d);
 }
 
-/* ������ ���� */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
 void reset(char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     for(int i = 0; i< SIZE; i++){
         for(int j = 0; j<SIZE; j++){
@@ -1670,10 +1692,10 @@ void printMatrix(char matrix[SIZE][SIZE]) {
     }
 }
 void printRubiksCube(char left[SIZE][SIZE], char front[SIZE][SIZE], char right[SIZE][SIZE], char back[SIZE][SIZE], char up[SIZE][SIZE], char down[SIZE][SIZE]) {
-    // ����� ������� �����
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
     printMatrix(up);
 
-    // ����� �����, ��������, ������ � ������ ������
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     for (int i = 0; i < SIZE; i++) {
         printf("%c%c%c%c%c   ", left[i][0], left[i][1], left[i][2], left[i][3], left[i][4]);
         printf("%c%c%c%c%c   ", front[i][0], front[i][1], front[i][2], front[i][3], front[i][4]);
@@ -1681,100 +1703,115 @@ void printRubiksCube(char left[SIZE][SIZE], char front[SIZE][SIZE], char right[S
         printf("%c%c%c%c%c\n", back[i][0], back[i][1], back[i][2], back[i][3], back[i][4]);
     }
 
-    // ����� ������ �����
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
     printMatrix(down);
     printf("\n");
 }
+
+/* Ñáîðêà ðåáåð */
 void solve_ribs(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+
     int count;
     char search_f;
     char search_u;
-    int cnt_edge;
     int steps;
     int doub;
     int num = 0;
     int count_cheak=1;
     int sequence_edges[12];
+
+    /* îïòèìèçàöèÿ + ïðîâåðêà íà òî, ÷òî êóáèê íå íóæíî ñîáèðàòü â äàííîì ñëó÷àå*/
+    if(cheak_ribs(sequence_edges,l,f,r,b,u,d) == 0){ return; } /* âñå ñîáðàíî */
+
     while(1){
         count = 0;
         steps = 0;
         search_f = f[0][2];
         search_u = u[4][2];
-        cnt_edge = 0;
+
+        /* Ñêîëüêî íåïðàâèëüíûõ êóáèêîâ íà äàííîì ðåáðå? -> count */
         cntNotOneColor_rib(f,u,search_f,search_u,&count);
-        count_cheak=count;
+        count_cheak = count;
         
-        while(count!=0){
+        /* ðàáîòà ñ îäíèì ðåáðîì*/
+        while(count != 0){
             
-            change_ribs(count_moves,history,0,1,l,f,r,b,u,d);
+            change_ribs(count_moves,history,0,1,l,f,r,b,u,d); /* íàøëè íóæíûé êóáèê è ïîñòàâèëè íà ìåñòî*/
             
-            
-            if((f[4][1]==search_f && d[0][1]==search_u) || (f[4][3]==search_f && d[0][3]==search_u)){
+            /* åñëè íèæíèè êóáèêè íåîáõîäèìî ïåðåâåðíóòü âåðõ íîãàìè, òî äåëàåì ïîâîðîòû*/
+            if((f[4][1] == search_f && d[0][1] == search_u) || (f[4][3] == search_f && d[0][3] == search_u)){
                 D(count_moves,history,l,f,r,b,u,d);
                 U_(count_moves,history,l,f,r,b,u,d);
                 R(count_moves,history,l,f,r,b,u,d);
                 F(count_moves,history,l,f,r,b,u,d);
                 U(count_moves,history,l,f,r,b,u,d);
             }
-            if(f[4][1]==search_u && d[0][1]==search_f){
-                num=1;
+            if(f[4][1] == search_u && d[0][1] == search_f){
+                num = 1;
             }
-            else if(f[4][3]==search_u && d[0][3]==search_f){
-                num=3;
+            else if(f[4][3] == search_u && d[0][3] == search_f){
+                num = 3;
             }
             
             change_ribs(count_moves,history,num,2,l,f,r,b,u,d);
             
             count--;
-            if(count!=0){
+            if(count != 0){
                 turn_cube(count_moves,history,'d',l,f,r,b,u,d);
                 turn_cube(count_moves,history,'l',l,f,r,b,u,d);
                 
             }
             
         }
+
         int cheak = cheak_ribs(sequence_edges,l,f,r,b,u,d);
-        
-        
-        /* ����� ���-�� ��������*/
-        if(cheak == 0){break;}
+
+                
+        /* çäåñü ÷òî-òî ñòðàííîå*/
+        if(cheak == 0){break;} /*ðåáðà âñå ñîáðàíû*/
+
+        /* 1 èëè 2 ðåáðà íå ñîáðàíû*/
+
         else if(cheak == 1){
             last_ribs(count_moves,history,sequence_edges,l,f,r,b,u,d);
             break;
         }
-        else if(cheak == 2 && count_cheak==0){
-            if(steps<3|| steps>4 && steps<7|| steps>8 && steps<11){
+        /* íå ñîáðàíû áîëåå, ÷åì 2 ðåáðà -> ïîâîðà÷èâàåì êóá*/
+        else if(cheak == 2 && count_cheak == 0){
+            if(steps < 3|| steps > 4 && steps < 7|| steps > 8 && steps < 11){
                 turn_cube(count_moves,history,'u',l,f,r,b,u,d);
                 steps++;
             }
-            if(steps==4 || steps==7){
+            if(steps == 4 || steps == 7){
                 turn_cube(count_moves,history,'l',l,f,r,b,u,d);
                 steps++;
             }
         }
     }
 }
+
 void last_ribs(int*count_moves,struct history* history,int* sequence_edges, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
-    int k =0;
-    int j =0;
+    int k = 0;
+    int j = 0;
+
     //char*edges[][5]={f,d, f,r, f,l, r,b, r,u, r,d, u,b, l,b, b,d, l,d, l,u, f,u};
     int save = 0;
    
-  
+    /* Ïîñòàíîâêà ðåáðà íà âåðõ ôðîíòà*/
     if(sequence_edges[k] != -1){//up
-        j=sequence_edges[k];
-        if(j==0){F(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);}
-        else if(j==2){F_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==4){F(count_moves,history,l,f,r,b,u,d);} 
-        else if(j==6){R_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==8){U_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==10){R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==12){U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==14){L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);}
-        else if(j==16){B(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==18){L_(count_moves,history,l,f,r,b,u,d);L_(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);}
-        else if(j==20){U(count_moves,history,l,f,r,b,u,d);}
-        else if(j==22){ //do nothing
+        j = sequence_edges[k];
+        if(j == 0){F(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 2){F_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 4){F(count_moves,history,l,f,r,b,u,d);} 
+        else if(j == 6){R_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 8){U_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 10){R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 12){U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 14){L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 16){B(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 18){L_(count_moves,history,l,f,r,b,u,d);L_(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 20){U(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 22){ //do nothing
         }
         k++;
     }
@@ -1782,71 +1819,168 @@ void last_ribs(int*count_moves,struct history* history,int* sequence_edges, char
     save = j;
     cheak_ribs(sequence_edges,l,f,r,b,u,d);
     
-    k=0;
-    if(sequence_edges[k]==save){k++;}
-    if(sequence_edges[k]!=-1){//down
-        j=sequence_edges[k];
-        if(j==0){//do nothing
+    /* Åñëè åñòü âòîðîå íå ñîáðàíîå ðåáðî, òî ñòàâèì åãî âíèç ôðîíòà*/
+    k = 0;
+    if(sequence_edges[k] == save){k++;}
+    if(sequence_edges[k] != -1){//down
+        j = sequence_edges[k];
+        if(j == 0){//do nothing
         }
-        else if(j==2){R_(count_moves,history,l,f,r,b,u,d); D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==4){L(count_moves,history,l,f,r,b,u,d); D(count_moves,history,l,f,r,b,u,d);} 
-        else if(j==6){R(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==8){R_(count_moves,history,l,f,r,b,u,d);R_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==10){D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==12){B_(count_moves,history,l,f,r,b,u,d);B_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==14){L_(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
-        else if(j==16){D(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
-        else if(j==18){D(count_moves,history,l,f,r,b,u,d);}
-        else if(j==20){L(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
-        else if(j==22){F(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 2){R_(count_moves,history,l,f,r,b,u,d); D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 4){L(count_moves,history,l,f,r,b,u,d); D(count_moves,history,l,f,r,b,u,d);} 
+        else if(j == 6){R(count_moves,history,l,f,r,b,u,d); D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 8){R_(count_moves,history,l,f,r,b,u,d); R_(count_moves,history,l,f,r,b,u,d); D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 10){D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 12){B_(count_moves,history,l,f,r,b,u,d); B_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d); D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 14){L_(count_moves,history,l,f,r,b,u,d); D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 16){D(count_moves,history,l,f,r,b,u,d); D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 18){D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 20){L(count_moves,history,l,f,r,b,u,d); L(count_moves,history,l,f,r,b,u,d); D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 22){F(count_moves,history,l,f,r,b,u,d); F(count_moves,history,l,f,r,b,u,d);}
         k++;
     }
-    //if...then...
     
-    for(int k = 0;k<2;k++){
-        if((u[4][1]==f[4][2] || u[4][1]==d[0][2]) && (u[4][1]==f[4][3] || u[4][1]==d[0][3]) && (f[0][1]==d[0][2] || f[0][1]==f[4][2])&& (f[0][1]==d[0][3] || f[0][1]==f[4][3])){
-            //3
-            // turn_cube(&count_moves,history'l',l,f,r,b,u,d);
-            U_(count_moves,history,l,f,r,b,u,d);L_(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);
+    for(int k = 0; k < 2; k++){
+        /* íåîáõîäèìî ïðèâåñòè ê äðóãîìó âèäó -> ïåðåíîñ ðåáðà*/
+        if((u[4][1] == f[4][2] || u[4][1] == d[0][2]) && (u[4][1] == f[4][3] || u[4][1] == d[0][3]) && (f[0][1] == d[0][2] || f[0][1] == f[4][2])&& (f[0][1] == d[0][3] || f[0][1] == f[4][3])){
+            U_(count_moves,history,l,f,r,b,u,d);
+            L_(count_moves,history,l,f,r,b,u,d);
+            B(count_moves,history,l,f,r,b,u,d);
             turn_cube(count_moves,history,'u',l,f,r,b,u,d);
         }
-        if((u[4][3]==f[4][2] || u[4][3]==d[0][2]) && (u[4][3]==f[4][1] || u[4][3]==d[0][1]) && (f[0][3]==d[0][2] || f[0][3]==f[4][2])&& (f[0][3]==d[0][1] || f[0][3]==f[4][1])){
-            U_(count_moves,history,l,f,r,b,u,d);L_(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);
+        /* íåîáõîäèìî ïðèâåñòè ê äðóãîìó âèäó -> ïåðåíîñ ðåáðà*/
+        else if((u[4][3] == f[4][2] || u[4][3] == d[0][2]) && (u[4][3] == f[4][1] || u[4][3] == d[0][1]) && (f[0][3] == d[0][2] || f[0][3] == f[4][2])&& (f[0][3] == d[0][1] || f[0][3] == f[4][1])){
+            U_(count_moves,history,l,f,r,b,u,d);
+            L_(count_moves,history,l,f,r,b,u,d);
+            B(count_moves,history,l,f,r,b,u,d);
             turn_cube(count_moves,history,'u',l,f,r,b,u,d);
         }
-        if(u[4][1]==d[0][1] && f[0][1]==f[4][1]&& f[0][1]==f[4][2]){
-            //1
-            R2(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);R2_(count_moves,history,l,f,r,b,u,d);
+        /* Âîçðàñòàþùàÿ ïîçèöèÿ*/
+        if((u[4][1] == d[0][1] || u[4][1] == f[4][1]) && (f[0][1] == f[4][1] || f[0][1] == d[0][1])&& (f[0][1] == f[4][2] || f[0][1] == d[0][2])){
+            
+            R2(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
         }
-        if((u[4][3]==d[0][2] || u[4][3]==f[4][2])&& (u[4][3]==d[0][3] || u[4][3]==f[4][3]) && (f[0][3]==f[4][2] || f[0][3]==d[0][2])&& (f[0][3]==f[4][3] || f[0][3]==d[0][3])){
-            //2
-            L2_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);L2(count_moves,history,l,f,r,b,u,d);
-        }
-        if(u[4][2]==f[4][1] && u[4][2]==f[4][3] && f[0][2]==f[4][1] && f[0][2]==f[4][3]){
-            R2(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);R2_(count_moves,history,l,f,r,b,u,d);
-            L2_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);L2(count_moves,history,l,f,r,b,u,d);
-        }
+        /* Ïàäàþùàÿ ïîçèöèÿ*/
+        if((u[4][3] == d[0][2] || u[4][3] == f[4][2]) && (u[4][3] == d[0][3] || u[4][3] == f[4][3]) && (f[0][3] == f[4][2] || f[0][3] == d[0][2])&& (f[0][3] == f[4][3] || f[0][3] == d[0][3])){
 
-        if(u[4][1]==f[0][2] && u[4][3]==f[0][2]&& f[0][1]==u[4][2] && f[0][3]==u[4][2] &&  f[4][1]==d[0][2] && f[4][3]==d[0][2]&& d[0][1]==f[4][2] && d[0][3]==f[4][2]){
-            M(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);M_(count_moves,history,l,f,r,b,u,d);
+            L2_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            L2(count_moves,history,l,f,r,b,u,d);
         }
-        if(u[4][1]==u[4][3] && f[0][1]==f[0][3] && (f[4][2]==u[4][1] || d[0][2]==u[4][1])&&((f[4][2]==f[0][1] || d[0][2]==f[0][1]))){
-            R2(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);R2_(count_moves,history,l,f,r,b,u,d);
-            L2_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);L2(count_moves,history,l,f,r,b,u,d);
+        if(u[4][2] == f[4][1] && u[4][2] == f[4][3] && f[0][2] == d[0][1] && f[0][2] == d[0][3]){
+
+            R2(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
+            L2_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            L2(count_moves,history,l,f,r,b,u,d);
+        }
+        else if(u[4][2] == d[0][1] && u[4][2] == d[0][3] && f[0][2] == f[4][1] && f[0][2] == f[4][3]){ /* Äîáàâëåí äîïîëíèòåëüíàÿ ïðîâåðêà. Åñëè âûïîëíèëîñü ïåðâîå, òî âòðîå ïðîâåðÿòü íå íàäî*/
+
+            R2(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
+            L2_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            L2(count_moves,history,l,f,r,b,u,d);
+        }
+        /*öåíòðàëüíûå êóáèêè ó äâóõ ðåáåð íåîáõîäèìî ïîâåðíóòü*/
+        if(u[4][1] == f[0][2] && u[4][3] == f[0][2] && f[0][1] == u[4][2] && f[0][3] == u[4][2] &&  f[4][1] == d[0][2] && f[4][3] == d[0][2]&& d[0][1] == f[4][2] && d[0][3] == f[4][2]){
+            
+            M(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            M_(count_moves,history,l,f,r,b,u,d);
+        }
+        if(u[4][1] == u[4][3] && f[0][1] == f[0][3] && (f[4][2] == u[4][1] || d[0][2] == u[4][1]) && (f[4][2] == f[0][1] || d[0][2] == f[0][1])){
+            R2(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
+            L2_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F_(count_moves,history,l,f,r,b,u,d);
+            L(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            L2(count_moves,history,l,f,r,b,u,d);
             turn_cube(count_moves,history,'u',l,f,r,b,u,d);
         }
-        if(u[4][1]==f[0][2] && u[4][3]==f[0][2]&& f[0][1]==u[4][2] && f[0][3]==u[4][2]){
+        /*Îäíî ðåáðî*/
+        if(u[4][1] == f[0][2] && u[4][3] == f[0][2]&& f[0][1] == u[4][2] && f[0][3] == u[4][2]){
             //func hard
-            R2_(count_moves,history,l,f,r,b,u,d);R2_(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);L2(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);
-            R2_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);R2(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);R2(count_moves,history,l,f,r,b,u,d);
-            F(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);L2_(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);B(count_moves,history,l,f,r,b,u,d);R2_(count_moves,history,l,f,r,b,u,d);R2_(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
+            B(count_moves,history,l,f,r,b,u,d);
+            B(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            L2(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            R2(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            U_(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            R2(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            F(count_moves,history,l,f,r,b,u,d);
+            L2_(count_moves,history,l,f,r,b,u,d);
+            B(count_moves,history,l,f,r,b,u,d);
+            B(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
+            R2_(count_moves,history,l,f,r,b,u,d);
         }
         
-        F(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);
-        if(u[0][1]==b[0][2] && u[0][3]==b[0][2]){turn_cube(count_moves,history,'d',l,f,r,b,u,d);}
+        F(count_moves,history,l,f,r,b,u,d);
+        F(count_moves,history,l,f,r,b,u,d);
+
+        /* Åñëè òåïåðü îñòàëîñü îäíî ðåáðî òî åãî íåîáõîäèìî ïåðåìåñòèòü áëèæå*/
+        if(u[0][1] == b[0][2] && u[0][3] == b[0][2]){
+            turn_cube(count_moves,history,'d',l,f,r,b,u,d);
+        }
     }
     
 }
+
+/* êàêîå êîëè÷åñòâî íåñîáðàííûõ ðåáåð îñòàëîñü*/
 int cheak_ribs(int* sequence_edges, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int count_rib = 0;
     int size = 4;
@@ -1901,11 +2035,15 @@ int cheak_ribs(int* sequence_edges, char l[SIZE][SIZE], char f[SIZE][SIZE],char 
     char search_2;
     int cnt = 0;
     int j = 0;
-    for(int m=0;m<12;m++){
-        sequence_edges[m]=-1;
+
+    /*çàìåíèòü íà memcpy*/
+    for(int m = 0; m < 12; m++){
+        sequence_edges[m] = -1;
     }
-    int k =0;
-    for(;j<24;j+=2){
+
+    int k = 0;
+    for(; j < 24 ; j += 2){
+
         mas1=Bigmas[j];
         mas2=Bigmas[j+1];
         edge1=(char(*)[5])(edges[j]);
@@ -1913,30 +2051,30 @@ int cheak_ribs(int* sequence_edges, char l[SIZE][SIZE], char f[SIZE][SIZE],char 
         search_1=edge1[mas1[4]][mas1[5]];
         search_2=edge2[mas2[4]][mas2[5]];
         cnt=0;
-        for(int i=0;i<size;i+=2){
-            if(edge1[mas1[i]][mas1[i+1]]!=search_1 || edge2[mas2[i]][mas2[i+1]]!=search_2){
-                // if(edge1[mas1[i]][mas1[i+1]]!=search_2 || edge2[mas2[i]][mas2[i+1]]!=search_1 ){
-                //     cnt++;
-                //     break;
-                // }
-                cnt++;break;
+
+        for(int i = 0; i < size; i += 2){
+            if(edge1[mas1[i]][mas1[i+1]] != search_1 || edge2[mas2[i]][mas2[i+1]] != search_2){
+                cnt++;
+                break;
             }
         }
-        if(cnt>0){
+        if(cnt > 0){
             count_rib++;
-            sequence_edges[k]=j;
+            sequence_edges[k] = j;
             k++;
         }
     }
-    if(count_rib>2){return 2;}
-    if(count_rib == 0){return 0;}
+    if(count_rib > 2){return 2;}
+    if(count_rib  ==  0){return 0;}
     return 1;
 }
+
+/* ñêîëüêî â ðåáðå íå õâàòàåò êóáèêîâ ñ íóæíûìè öâåòàìè: 0 , 1 , 2 */
 void cntNotOneColor_rib(char f [SIZE][SIZE],char u[SIZE][SIZE],char search_f,char search_u,int* count){
     int size = 4;
     int mas_f[4]={0,1,0,3};
     int mas_u[4]={4,1,4,3};
-    for(int i=0;i<size;i+=2){
+    for(int i = 0; i < size; i += 2){
         if(f[mas_f[i]][mas_f[i+1]]!=search_f || u[mas_u[i]][mas_u[i+1]]!=search_u){
             if(f[mas_f[i]][mas_f[i+1]]!=search_u || u[mas_u[i]][mas_u[i+1]]!=search_f ){
                 (*count)++;
@@ -1953,40 +2091,44 @@ void cntNotOneColor_rib(char f [SIZE][SIZE],char u[SIZE][SIZE],char search_f,cha
 //rotate if rib isnt full
 //if 10_ribs full then
 
+
+/* Ïîñòàíîâêà êóáèêà ñ íàéäåííîãî ðåáðà íà ðàññìàòðèâàåìîå */
 void change_ribs(int*count_moves,struct history* history,int num_in_rib, int var,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+
     //char*edges[][5]={f,d,f,r,f,l,r,b,r,u,r,d,u,b,l,b,b,d,l,d,l,u,f,u};
     int cnt = 0;
     int steps = 0;
     int j;
     
-    j = search_rib_for_change(count_moves,history,var,l,f,r,b,u,d);
+    j = search_rib_for_change(count_moves,history,var,l,f,r,b,u,d); // ïîèñê ãðàíè äëÿ èçìåíåíèÿ
     if(var == 1){
-        if(j==0){//do nothing
+        if(j == 0){//do nothing
         }
-        else if(j==2){R_(count_moves,history,l,f,r,b,u,d); D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==4){L(count_moves,history,l,f,r,b,u,d); D(count_moves,history,l,f,r,b,u,d);} 
-        else if(j==6){R(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==8){R_(count_moves,history,l,f,r,b,u,d);R_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==10){D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==12){B_(count_moves,history,l,f,r,b,u,d);B_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==14){L_(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
-        else if(j==16){D(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
-        else if(j==18){D(count_moves,history,l,f,r,b,u,d);}
-        else if(j==20){L(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 2){R_(count_moves,history,l,f,r,b,u,d); D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 4){L(count_moves,history,l,f,r,b,u,d); D(count_moves,history,l,f,r,b,u,d);} 
+        else if(j == 6){R(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 8){R_(count_moves,history,l,f,r,b,u,d);R_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 10){D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 12){B_(count_moves,history,l,f,r,b,u,d);B_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 14){L_(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 16){D(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 18){D(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 20){L(count_moves,history,l,f,r,b,u,d);L(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);}
 
     }
     if(var == 2){
-        if(j==2){//do nothing
+        if(j == 2){//do nothing
         }
-        else if(j==4){ D(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);} 
-        else if(j==6){R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
-        else if(j==8){R_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==10){R(count_moves,history,l,f,r,b,u,d);}
-        else if(j==12){B_(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
-        else if(j==14){B_(count_moves,history,l,f,r,b,u,d);B_(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
-        else if(j==16){B(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
-        else if(j==18){D(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
-        else if(j==20){U(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);R_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 4){ D(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);F_(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);} 
+        else if(j == 6){R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 8){R_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 10){R(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 12){B_(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 14){B_(count_moves,history,l,f,r,b,u,d);B_(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 16){B(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 18){D(count_moves,history,l,f,r,b,u,d);D(count_moves,history,l,f,r,b,u,d);R(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);D_(count_moves,history,l,f,r,b,u,d);}
+        else if(j == 20){U(count_moves,history,l,f,r,b,u,d);U(count_moves,history,l,f,r,b,u,d);R_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);U_(count_moves,history,l,f,r,b,u,d);}
+        
         if(num_in_rib == 1){
             L2_(count_moves,history,l,f,r,b,u,d);
             U(count_moves,history,l,f,r,b,u,d);
@@ -2004,7 +2146,10 @@ void change_ribs(int*count_moves,struct history* history,int num_in_rib, int var
     }
     
 }
+
+/* var == 1 : Ïîèñê ãðàíè, íà êîòîðîé åñòü êóáèê ñ ïåðåäàííûìè 2ìÿ öâåòàìè*/
 int search_rib_for_change(int*count_moves,struct history* history,int var, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+
     int size = 4;
 
     int mas_f_r[]={1,4,3,4,2,4};
@@ -2052,59 +2197,50 @@ int search_rib_for_change(int*count_moves,struct history* history,int var, char 
     
     char search_1;
     char search_2;
-    int cnt = 0;
     int j = 0;
 
-    if(var==1){
-        char search_f=f[0][2];
-        char search_u=u[4][2];
-        for(;j<22;j+=2){
-            mas1=Bigmas[j];
-            mas2=Bigmas[j+1];
-            edge1=(char(*)[5])(edges[j]);
-            edge2=(char(*)[5])(edges[j+1]);
+    if(var == 1){
+
+        char search_f = f[0][2];
+        char search_u = u[4][2];
+
+        for(; j < 22; j += 2){
+            mas1 = Bigmas[j];
+            mas2 = Bigmas[j+1];
+            edge1 = (char(*)[5])(edges[j]);
+            edge2 = (char(*)[5])(edges[j+1]);
             
-            cnt=0;
-            for(int i=0;i<size;i+=2){
-                if((edge1[mas1[i]][mas1[i+1]]==search_u && edge2[mas2[i]][mas2[i+1]]==search_f) || (edge1[mas1[i]][mas1[i+1]]==search_f && edge2[mas2[i]][mas2[i+1]]==search_u)){
-                    cnt++;
-                    break;
+            for(int i = 0;i < size;i += 2){
+
+                if((edge1[mas1[i]][mas1[i+1]] == search_u && edge2[mas2[i]][mas2[i+1]] == search_f) || (edge1[mas1[i]][mas1[i+1]] == search_f && edge2[mas2[i]][mas2[i+1]] == search_u)){
+                    return j;
                 }
             }
-            if(cnt>0){
-                break;
-            }
+            
         }
-        
     }
 
-    if(var==2){
-        for(j=2;j<22;j+=2){
-            mas1=Bigmas[j];
-            mas2=Bigmas[j+1];
-            edge1=(char(*)[5])(edges[j]);
-            edge2=(char(*)[5])(edges[j+1]);
-            search_1=edge1[mas1[4]][mas1[5]];
-            search_2=edge2[mas2[4]][mas2[5]];
-            cnt=0;
-            for(int i=0;i<size;i+=2){
-                if(edge1[mas1[i]][mas1[i+1]]!=search_1 || edge2[mas2[i]][mas2[i+1]]!=search_2){
-                    // if(edge1[mas1[i]][mas1[i+1]]!=search_2 || edge2[mas2[i]][mas2[i+1]]!=search_1){
-                    //     cnt++;
-                    //     break;
-                    // }
-                    cnt++;
-                    break;
+    if(var == 2){
+
+        for(j = 2;j < 22;j += 2){
+
+            mas1 = Bigmas[j];
+            mas2 = Bigmas[j+1];
+            edge1 = (char(*)[5])(edges[j]);
+            edge2 = (char(*)[5])(edges[j+1]);
+            search_1 = edge1[mas1[4]][mas1[5]];
+            search_2 = edge2[mas2[4]][mas2[5]];
+            
+            for(int i = 0;i < size;i += 2){
+
+                if(edge1[mas1[i]][mas1[i+1]] != search_1 || edge2[mas2[i]][mas2[i+1]] != search_2){
+                    return j;
                 }
             }
-            if(cnt>0){
-                break;
-            }
+            
         }
-        
     }
     return j;
-    
 }
 
 void solve_white_rib(int*count_moves,struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
@@ -2261,7 +2397,7 @@ void solve_corners(int*count_moves,struct history* history,char l[SIZE][SIZE], c
         search_r=r[2][2];
         search_d=d[2][2];
         if(f[4][4]!=search_f || d[0][4]!=search_d || r[4][0]!=search_r){
-            //�� ������
+            //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             while(!((f[0][4]==search_f || f[0][4]==search_r || f[0][4]==search_d)&&(u[4][4]==search_f || u[4][4]==search_d || u[4][4]==search_r)&&(r[0][0]==search_f || r[0][0]==search_d || r[0][0]==search_r))){
                 U_(count_moves,history,l,f,r,b,u,d);
                 
@@ -2523,5 +2659,5 @@ void last_corners_part2(int*count_moves,struct history* history,char l[SIZE][SIZ
 
 }
 
-//malloc ���������� void, 
-// ������ ������ * ������
+//malloc ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ void, 
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
