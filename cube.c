@@ -635,7 +635,7 @@ int main(){
                            {'Y', 'Y', 'Y', 'Y', 'Y'}};
     
 
-    //Ð¡Ð¾Ð·Ð´Ð°ÑÐ¼ Ð½Ð¾Ð²ÑÑ Ð¸ÑÑÐ¾ÑÐ¸Ñ ÑÐ¾ÑÑÐ°Ð½ÐµÐ½Ð¸Ð¹
+    /* инициализация истории*/
     struct history* history = init_history();
 
     int count_moves = 0;
@@ -660,9 +660,9 @@ int main(){
 
     shaderProgram->texture_slot0_uniform = glGetUniformLocation(shaderProgram->ID, TEXTURE_SLOT0_UNIFORM);
     glUniform1i(shaderProgram->texture_slot0_uniform, 0);
-    glEnable(GL_BLEND);   // neeeeee ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 2
+    glEnable(GL_BLEND);   // neeeeee прозрачность 2
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+ 
     object* CUBE = create_object(1);
 
     object* button_u = create_object(0);
@@ -1272,13 +1272,18 @@ void one_square(int i,char color){
         c1 = yl1;c2 = yl2; c3 = yl3;
     }
      /* ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ */
-    for(int j = 0;j<4;j++){
-        vertices[i + j*6 + 3]=c1;
-        vertices[i + j*6 + 4]=c2;
-        vertices[i + j*6 + 5]=c3;
-    }
-       
-    
+    vertices[i + 3] = c1;
+    vertices[i + 4] = c2;
+    vertices[i + 5] = c3;
+    vertices[i + 9] = c1;
+    vertices[i + 10] = c2;
+    vertices[i + 11] = c3;
+    vertices[i + 15] = c1;
+    vertices[i + 16] = c2;
+    vertices[i + 17] = c3;
+    vertices[i + 21] = c1;
+    vertices[i + 22] = c2;
+    vertices[i + 23] = c3;
 }
 void mas_to_color(char mas[SIZE][SIZE],char edge){
     int i = 0; int shift = 0;
@@ -1290,8 +1295,7 @@ void mas_to_color(char mas[SIZE][SIZE],char edge){
     }
     for(;i<SIZE;i++){
         for(int j = 0; j<SIZE; j++){
-            /* ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ */
-            /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+           
             if(mas[i][j]=='R' && (vertices[shift + (i*SIZE+j)*24+3]!=r1 || vertices[shift + (i*SIZE+j)*24+4]!=r2 || vertices[shift + (i*SIZE+j)*24+5]!=r3)){
                 one_square(shift + (i*SIZE+j)*24,'R');
             }
@@ -1320,7 +1324,7 @@ void turn_cube(int* count_moves,struct history* history,char orient, char l[SIZE
     char temp;
     if(orient == 'u'){
         for(int k = 0; k < SIZE; k++){
-            /* ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 4-k */
+            
             for (int i = 0; i < SIZE; i++) {
                 temp = u[i][k];
                 u[i][k] = f[i][k];
@@ -1382,7 +1386,7 @@ void solve_center_corn(int*count_moves,struct history* history,char l[SIZE][SIZE
     int steps = 0;
     int doub;
     int down_cnt = 0;
-    
+    if(cheak_center(2,l,f,r,b,u,d)){return;}
     for(int j=0; j<8 ;j++){
         count = 0;
         steps = 0;
@@ -1405,7 +1409,7 @@ void solve_center_corn(int*count_moves,struct history* history,char l[SIZE][SIZE
                 steps = 0;
                 do{
                     cntNotOneColor(f,f[2][2],&cnt,2);
-                    if(cnt==0){
+                    if(cnt == 0){
                         turn_cube(count_moves,history,'r',l,f,r,b,u,d);
                         steps++;
                     }
@@ -1447,7 +1451,7 @@ void solve_center_rib(int*count_moves, struct history* history, char l[SIZE][SIZ
     int doub;
     int cnt = 0;
     int down_cnt = 0;
-    
+    if(cheak_center(1,l,f,r,b,u,d)){return;}
     for(int j=0;j < 8;j++){
         count = 0;
         steps = 0;
@@ -1514,30 +1518,50 @@ void solve_center_rib(int*count_moves, struct history* history, char l[SIZE][SIZ
 }
 int cheak_center(int num, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int count = 0;
-    cntNotOneColor(l,l[2][2],&count,num);
-    cntNotOneColor(f,l[2][2],&count,num);
-    cntNotOneColor(r,l[2][2],&count,num);
-    cntNotOneColor(b,l[2][2],&count,num);
-    cntNotOneColor(u,l[2][2],&count,num);
-    cntNotOneColor(d,l[2][2],&count,num);
-    if(count>0){return 0;}
+    cntNotOneColor(l,l[2][2],&count,num);if(count > 0){return 0;}
+    cntNotOneColor(f,f[2][2],&count,num);if(count > 0){return 0;}
+    cntNotOneColor(r,r[2][2],&count,num);if(count > 0){return 0;}
+    cntNotOneColor(b,b[2][2],&count,num);if(count > 0){return 0;}
+    cntNotOneColor(u,u[2][2],&count,num);if(count > 0){return 0;}
+    cntNotOneColor(d,d[2][2],&count,num);if(count > 0){return 0;}
+    // printf("count %d\n", count);
+    // if(count > 0){return 0;}
     return 1;
 }
+
+
 void cntNotOneColor(char edge[SIZE][SIZE],char search, int* count,int num){
-    int* mas;
-    int size = 0;
-    int mas1[8]={1,2,2,1,2,3,3,2};
-    int mas2[8]={1,1,1,3,3,1,3,3};
-
-    if(num == 1){ mas=mas1;size = 8;}
-    if(num == 2){ mas=mas2;size = 8;}
-
-    for(int i = 0; i < size; i += 2){
-        if( edge[mas[i]][mas[i+1]] != search ){
+    
+    if(num == 1){ 
+        if( edge[1][2] != search ){
+            (*count)++;
+        }
+        if( edge[2][1] != search ){
+            (*count)++;
+        }
+        if( edge[2][3] != search ){
+            (*count)++;
+        }
+        if( edge[3][2] != search ){
+            (*count)++;
+        }
+    }
+    else if(num == 2){ 
+        if( edge[1][1] != search ){
+            (*count)++;
+        }
+        if( edge[1][3] != search ){
+            (*count)++;
+        }
+        if( edge[3][1] != search ){
+            (*count)++;
+        }
+        if( edge[3][3] != search ){
             (*count)++;
         }
     }
 }
+
 void search_and_rotate_center_corn(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE],int* count,char search){
     
     while( u[1][1] == search || u[1][3] == search || u[3][1] == search || u[3][3] == search ){
@@ -1614,32 +1638,29 @@ void search_and_rotate_center_rib(int*count_moves, struct history* history, char
 
 
 void solve(int*count_moves, struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
-    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 3ï¿½3 */
-    solve_center_rib(count_moves,history,l,f,r,b,u,d);  // cï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    solve_center_corn(count_moves,history,l,f,r,b,u,d); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ X
-    solve_ribs(count_moves,history,l,f,r,b,u,d);// ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ , ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
-    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ 3ï¿½3 */
-    solve_white_rib(count_moves,history,l,f,r,b,u,d); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
-    solve_corners(count_moves,history,l,f,r,b,u,d); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
-    solve_right_place_for_rib(count_moves,history,l,f,r,b,u,d); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
-    yellow_ribs(count_moves,history,l,f,r,b,u,d); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
-    four_edges_color(count_moves,history,l,f,r,b,u,d); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, 4 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    
+    solve_center_rib(count_moves,history,l,f,r,b,u,d);  
+    solve_center_corn(count_moves,history,l,f,r,b,u,d); 
+    solve_ribs(count_moves,history,l,f,r,b,u,d);
+    
+    solve_white_rib(count_moves,history,l,f,r,b,u,d); 
+    solve_corners(count_moves,history,l,f,r,b,u,d); 
+    solve_right_place_for_rib(count_moves,history,l,f,r,b,u,d); 
+    yellow_ribs(count_moves,history,l,f,r,b,u,d); 
+    four_edges_color(count_moves,history,l,f,r,b,u,d); 
     last_corners_part1(count_moves,history,l,f,r,b,u,d);
     last_corners_part2(count_moves,history,l,f,r,b,u,d);
 }
 
-/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ */
+
 void reset(char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
-    for(int i = 0; i< SIZE; i++){
-        for(int j = 0; j<SIZE; j++){
-            r[i][j]='R';
-            l[i][j]='O';
-            f[i][j]='G';
-            b[i][j]='B';
-            u[i][j]='W';
-            d[i][j]='Y';
-        }
-    }
+    size_t mem_size = SIZE * SIZE;
+    memset(r, 'R', mem_size);
+    memset(l, 'O', mem_size);
+    memset(f, 'G', mem_size);
+    memset(b, 'B', mem_size);
+    memset(u, 'W', mem_size);
+    memset(d, 'Y', mem_size);
 }
 
 void center_rib(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
@@ -1766,17 +1787,14 @@ void solve_ribs(int*count_moves,struct history* history,char l[SIZE][SIZE], char
 
         int cheak = cheak_ribs(sequence_edges,l,f,r,b,u,d);
 
-                
-        /* çäåñü ÷òî-òî ñòðàííîå*/
-        if(cheak == 0){break;} /*ðåáðà âñå ñîáðàíû*/
+        if(cheak == 0){break;}
 
-        /* 1 èëè 2 ðåáðà íå ñîáðàíû*/
 
         else if(cheak == 1){
             last_ribs(count_moves,history,sequence_edges,l,f,r,b,u,d);
             break;
         }
-        /* íå ñîáðàíû áîëåå, ÷åì 2 ðåáðà -> ïîâîðà÷èâàåì êóá*/
+    
         else if(cheak == 2 && count_cheak == 0){
             if(steps < 3|| steps > 4 && steps < 7|| steps > 8 && steps < 11){
                 turn_cube(count_moves,history,'u',l,f,r,b,u,d);
@@ -1797,7 +1815,6 @@ void last_ribs(int*count_moves,struct history* history,int* sequence_edges, char
     //char*edges[][5]={f,d, f,r, f,l, r,b, r,u, r,d, u,b, l,b, b,d, l,d, l,u, f,u};
     int save = 0;
    
-    /* Ïîñòàíîâêà ðåáðà íà âåðõ ôðîíòà*/
     if(sequence_edges[k] != -1){//up
         j = sequence_edges[k];
         if(j == 0){F(count_moves,history,l,f,r,b,u,d);F(count_moves,history,l,f,r,b,u,d);}
@@ -1968,7 +1985,7 @@ void last_ribs(int*count_moves,struct history* history,int* sequence_edges, char
             R2_(count_moves,history,l,f,r,b,u,d);
             R2_(count_moves,history,l,f,r,b,u,d);
         }
-        
+
         F(count_moves,history,l,f,r,b,u,d);
         F(count_moves,history,l,f,r,b,u,d);
 
@@ -2069,16 +2086,25 @@ int cheak_ribs(int* sequence_edges, char l[SIZE][SIZE], char f[SIZE][SIZE],char 
     return 1;
 }
 
-/* ñêîëüêî â ðåáðå íå õâàòàåò êóáèêîâ ñ íóæíûìè öâåòàìè: 0 , 1 , 2 */
-void cntNotOneColor_rib(char f [SIZE][SIZE],char u[SIZE][SIZE],char search_f,char search_u,int* count){
-    int size = 4;
-    int mas_f[4]={0,1,0,3};
-    int mas_u[4]={4,1,4,3};
-    for(int i = 0; i < size; i += 2){
-        if(f[mas_f[i]][mas_f[i+1]]!=search_f || u[mas_u[i]][mas_u[i+1]]!=search_u){
-            if(f[mas_f[i]][mas_f[i+1]]!=search_u || u[mas_u[i]][mas_u[i+1]]!=search_f ){
-                (*count)++;
-            }
+void cntNotOneColor_rib(char f[SIZE][SIZE], char u[SIZE][SIZE], char search_f, char search_u, int* count) {
+    // Индексы для изоморфизма
+    int mas_f[4] = {0, 1, 0, 3}; 
+    int mas_u[4] = {4, 1, 4, 3};
+    char f1;
+    char f2;
+    char u1;
+    char u2;
+    // Упрощение цикла и уменьшение количества обращений
+    for (int i = 0; i < 4; i += 2) {
+        // Вытаскиваем значимые значения из массивов
+        char f1 = f[mas_f[i]][mas_f[i + 1]];
+        char f2 = f[mas_f[i]][mas_f[i + 1]];
+        char u1 = u[mas_u[i]][mas_u[i + 1]];
+        char u2 = u[mas_u[i]][mas_u[i + 1]];
+
+        // Проверка условий в одном выражении
+        if ((f1 != search_f || u1 != search_u) && (f2 != search_u || u2 != search_f)) {
+            (*count)++;
         }
     }
 }
@@ -2092,7 +2118,6 @@ void cntNotOneColor_rib(char f [SIZE][SIZE],char u[SIZE][SIZE],char search_f,cha
 //if 10_ribs full then
 
 
-/* Ïîñòàíîâêà êóáèêà ñ íàéäåííîãî ðåáðà íà ðàññìàòðèâàåìîå */
 void change_ribs(int*count_moves,struct history* history,int num_in_rib, int var,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
 
     //char*edges[][5]={f,d,f,r,f,l,r,b,r,u,r,d,u,b,l,b,b,d,l,d,l,u,f,u};
@@ -2100,7 +2125,7 @@ void change_ribs(int*count_moves,struct history* history,int num_in_rib, int var
     int steps = 0;
     int j;
     
-    j = search_rib_for_change(count_moves,history,var,l,f,r,b,u,d); // ïîèñê ãðàíè äëÿ èçìåíåíèÿ
+    j = search_rib_for_change(count_moves,history,var,l,f,r,b,u,d); 
     if(var == 1){
         if(j == 0){//do nothing
         }
@@ -2147,7 +2172,6 @@ void change_ribs(int*count_moves,struct history* history,int num_in_rib, int var
     
 }
 
-/* var == 1 : Ïîèñê ãðàíè, íà êîòîðîé åñòü êóáèê ñ ïåðåäàííûìè 2ìÿ öâåòàìè*/
 int search_rib_for_change(int*count_moves,struct history* history,int var, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
 
     int size = 4;
@@ -2220,7 +2244,7 @@ int search_rib_for_change(int*count_moves,struct history* history,int var, char 
         }
     }
 
-    if(var == 2){
+    else if(var == 2){
 
         for(j = 2;j < 22;j += 2){
 
@@ -2243,27 +2267,56 @@ int search_rib_for_change(int*count_moves,struct history* history,int var, char 
     return j;
 }
 
+void find_and_set_edge(char search,int*count_moves,struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+    if(u[2][2] == search){return;}
+    if(l[2][2] == search){
+        turn_cube(count_moves,history,'r',l,f,r,b,u,d);
+        turn_cube(count_moves,history,'u',l,f,r,b,u,d);
+        return;
+    }
+    if(r[2][2] == search){
+        turn_cube(count_moves,history,'l',l,f,r,b,u,d);
+        turn_cube(count_moves,history,'u',l,f,r,b,u,d);
+        return;
+    }
+    if(f[2][2] == search){
+        turn_cube(count_moves,history,'u',l,f,r,b,u,d);
+        return;
+    }
+    if(b[2][2] == search){
+        turn_cube(count_moves,history,'d',l,f,r,b,u,d);
+        return;
+    }
+    if(d[2][2] == search){
+        turn_cube(count_moves,history,'d',l,f,r,b,u,d);
+        turn_cube(count_moves,history,'d',l,f,r,b,u,d);
+        return;
+    }
+}
+
+/*убран цикл*/
 void solve_white_rib(int*count_moves,struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
-    int steps=0;
-    while(u[2][2]!='W'&&steps<5){
-        if(steps<3){
-            turn_cube(count_moves,history,'d',l,f,r,b,u,d);
-            steps++;
+    int steps = 0;
+    find_and_set_edge('W',count_moves,history,l,f,r,b,u,d);
+
+    if(u[2][2] == u[0][2] && u[2][2] == u[2][0] && u[2][2] == u[2][4] && u[2][2] == u[4][2]){
+        // printf("bebe\n");
+        if(f[0][2]==r[2][2] && r[0][2]==b[2][2] && b[0][2]==l[2][2]){
+            U(count_moves,history,l,f,r,b,u,d);
+            return;
         }
-        else if(steps==3){
-            turn_cube(count_moves,history,'r',l,f,r,b,u,d);
-            turn_cube(count_moves,history,'u',l,f,r,b,u,d);
-            steps++;
+        else if(f[0][2]==b[2][2] && r[0][2]==l[2][2] && b[0][2]==f[2][2]){
+            U(count_moves,history,l,f,r,b,u,d);
+            U(count_moves,history,l,f,r,b,u,d);
+            return;
         }
-        else if(steps==4){
-            turn_cube(count_moves,history,'u',l,f,r,b,u,d);
-            turn_cube(count_moves,history,'u',l,f,r,b,u,d);
-            steps++;
+        else if(f[0][2]==l[2][2] && l[0][2]==b[2][2] && b[0][2]==r[2][2]){
+            U_(count_moves,history,l,f,r,b,u,d);
+            return;
         }
     }
-    
     if((u[0][2]!=u[2][2] || u[2][0]!=u[2][2] || u[2][4]!=u[2][2] || u[4][2]!=u[2][2]) || (l[0][2]!=l[2][2] || f[0][2]!=f[2][2] || r[0][2]!=r[2][2] || b[4][2]!=b[2][2])){
-        for(int i = 0;i<4;i++){
+        for(int i = 0;i < 4;i++){
             
             char search_f=f[2][2];
             char search_u=u[2][2];
@@ -2341,20 +2394,20 @@ int where_rib(char search_f, char search_u, char l[SIZE][SIZE], char f[SIZE][SIZ
     void* edges[]={(void*)f,(void*)d,(void*)f,(void*)r,(void*)f,(void*)l,(void*)r,(void*)b,(void*)r,(void*)u,(void*)r,(void*)d,(void*)u,(void*)b,(void*)l,(void*)b,(void*)b,(void*)d,(void*)l,(void*)d,(void*)l,(void*)u,(void*)f,(void*)u};
     
     int j = 0;
-    int cnt=0;
-    for(;j<24;j+=2){
+    int cnt = 0;
+    for(;j < 24;j += 2){
         mas1=Bigmas[j];
         mas2=Bigmas[j+1];
         edge1=(char(*)[5])(edges[j]);
         edge2=(char(*)[5])(edges[j+1]);
         
-        for(int i=0;i<size;i+=2){
+        for(int i = 0;i < size;i += 2){
             if(edge1[mas1[i]][mas1[i+1]]==search_f && edge2[mas2[i]][mas2[i+1]]==search_u || edge1[mas1[i]][mas1[i+1]]==search_u && edge2[mas2[i]][mas2[i+1]]==search_f){
                 cnt= 1;
                 break;
             }
         }
-        if(cnt==1){break;}
+        if(cnt == 1){break;}
     }
     return j;
 }
@@ -2366,14 +2419,25 @@ void rotate_corn(int* count_moves,struct history* history,char l[SIZE][SIZE], ch
 }
 void solve_corners(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     
+    
     turn_cube(count_moves,history,'u',l,f,r,b,u,d);
     turn_cube(count_moves,history,'u',l,f,r,b,u,d);
-    char search_f;char search_d;char search_r;
+    char search_f;char search_d;char search_r; char search_b;
+    search_d = d[2][2];
+    search_f = f[2][2];
+    search_r = r[2][2];
+    search_b = b[2][2];
+    /* если углы собраны, выходим*/
+    if(d[0][0]==search_d && d[0][4]==search_d && d[4][0]==search_d && d[4][4]==search_d){
+        if(f[4][0]==search_f && f[4][4]==search_f && r[4][0]==search_r && r[4][4]==search_r && b[4][0]==search_b && b[4][4]==search_b){
+            return;
+        }
+    }
 
     for(int i = 0;i<4;i++){
         search_f = f[2][2];
-        search_r=r[2][2];
-        search_d=d[2][2];
+        search_r = r[2][2];
+        search_d = d[2][2];
         if((f[4][4]==search_f || f[4][4]==search_r || f[4][4]==search_d)&&(d[0][4]==search_f || d[0][4]==search_d || d[0][4]==search_r)&&(r[4][0]==search_f || r[4][0]==search_d || r[4][0]==search_r)){
             while(d[0][4]!=search_d || f[4][4]!=search_f ||  r[4][0]!=search_r){rotate_corn(count_moves,history,l,f,r,b,u,d);}
             
@@ -2382,7 +2446,6 @@ void solve_corners(int*count_moves,struct history* history,char l[SIZE][SIZE], c
             if(f[4][4]==search_d || d[0][4]==search_d || r[4][0]==search_d){
                 while(u[4][4]==search_d || f[0][4]==search_d || r[0][0]==search_d){
                     U_(count_moves,history,l,f,r,b,u,d);
-                    //printf("yes place\n");
                 }
                 rotate_corn(count_moves,history,l,f,r,b,u,d);
                 
@@ -2392,17 +2455,17 @@ void solve_corners(int*count_moves,struct history* history,char l[SIZE][SIZE], c
         turn_cube(count_moves,history,'l',l,f,r,b,u,d);
     }
     
-    for(int k=0;k<4;k++){
+    for(int k = 0;k < 4; k++){
         search_f = f[2][2];
-        search_r=r[2][2];
-        search_d=d[2][2];
+        search_r = r[2][2];
+        search_d = d[2][2];
+
         if(f[4][4]!=search_f || d[0][4]!=search_d || r[4][0]!=search_r){
-            //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-            while(!((f[0][4]==search_f || f[0][4]==search_r || f[0][4]==search_d)&&(u[4][4]==search_f || u[4][4]==search_d || u[4][4]==search_r)&&(r[0][0]==search_f || r[0][0]==search_d || r[0][0]==search_r))){
+            /*де Морган*/
+            while((f[0][4] != search_f && f[0][4] != search_r && f[0][4] != search_d)||(u[4][4] != search_f && u[4][4] != search_d && u[4][4] != search_r)||(r[0][0] != search_f && r[0][0] != search_d && r[0][0] != search_r)){
                 U_(count_moves,history,l,f,r,b,u,d);
-                
             }
-            while(d[0][4]!=search_d){rotate_corn(count_moves,history,l,f,r,b,u,d);}
+            while(d[0][4] != search_d){rotate_corn(count_moves,history,l,f,r,b,u,d);}
         }
         turn_cube(count_moves,history,'l',l,f,r,b,u,d);
     }
@@ -2429,10 +2492,15 @@ void swap_rib_left(int*count_moves,struct history* history,char l[SIZE][SIZE], c
     U(count_moves,history,l,f,r,b,u,d);
     F_(count_moves,history,l,f,r,b,u,d);
 }
+/*если ребра на своих местах -> выход*/
 void solve_right_place_for_rib(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
-    for(int i = 0;i<4;i++){
-        if(f[2][4]!=u[2][2] && r[2][0]!=u[2][2] && (f[2][4]!=f[2][2] || r[2][0]!=r[2][2])){
-            while(f[0][2]!=u[2][2] && u[4][2]!=u[2][2]){U_(count_moves,history,l,f,r,b,u,d);}
+    char search = u[2][2];
+    if(f[2][4]== f[2][2] && r[2][0]==r[2][2] && r[2][4]==r[2][2] && b[2][0]==b[2][2] && b[2][4]==b[2][2] && l[2][0]==l[2][2] && l[2][4]==l[2][2] && f[2][0]== f[2][2]){
+        return;
+    }
+    for(int i = 0;i < 4;i++){
+        if(f[2][4]!=search && r[2][0]!=search && (f[2][4]!=f[2][2] || r[2][0]!=r[2][2])){
+            while(f[0][2]!=search && u[4][2]!=search){U_(count_moves,history,l,f,r,b,u,d);}
             swap_rib_right(count_moves,history,l,f,r,b,u,d);
             
         }
@@ -2442,13 +2510,12 @@ void solve_right_place_for_rib(int*count_moves,struct history* history,char l[SI
     
     char search_f;
     char search_r;
-    for(int i = 0;i<4;i++){
+    for(int i = 0; i < 4;i++){
         search_f = f[2][2];
         search_r = r[2][2];
-        if(f[2][4]!=search_f || r[2][0]!=search_r){
+        if(f[2][4] != search_f || r[2][0] != search_r){
             // while(!((f[0][2]==search_f && u[4][2]==search_r) || (f[0][2]==search_r && u[4][2]==search_f))){
             while((f[0][2]!=search_f || u[4][2]!=search_r) && (f[0][2]!=search_r || u[4][2]!=search_f)){
-                
                 U_(count_moves,history,l,f,r,b,u,d);
             }
             if(f[0][2]==search_f && u[4][2]==search_r){
@@ -2468,9 +2535,18 @@ void solve_right_place_for_rib(int*count_moves,struct history* history,char l[SI
 }
 void yellow_ribs(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     // int mas_u[]={0,2, 2,0, 2,4, 4,2};
-    int count=0;
 
-    while(u[2][0]!=u[2][2]){U(count_moves,history,l,f,r,b,u,d);count++; if(count == 4){break;}}
+    if(u[2][0]!=u[2][2]){
+        U(count_moves,history,l,f,r,b,u,d);
+        if(u[2][0]!=u[2][2]){
+            U(count_moves,history,l,f,r,b,u,d);
+            if(u[2][0]!=u[2][2]){
+                U(count_moves,history,l,f,r,b,u,d);
+            }
+        }
+    }
+    
+    // while(u[2][0]!=u[2][2]){U(count_moves,history,l,f,r,b,u,d);count++; if(count == 4){break;}}
 
     if(u[0][2]!=u[2][2] || u[2][0]!=u[2][2] || u[2][4]!=u[2][2] || u[4][2]!=u[2][2]){
         
@@ -2525,8 +2601,10 @@ void four_edges_color(int*count_moves,struct history* history,char l[SIZE][SIZE]
         if(b[0][2]==b[2][2]){
             count++;
         }
-
+        
         if(count>max_cnt){
+            /* если все сошлось, то выходим, функция сделала сво дело */
+            if(count == 4){return;}
             max_cnt = count;
             max_i = i;
         }
@@ -2572,7 +2650,7 @@ void change_last_four_ribs(int*count_moves,struct history* history,char l[SIZE][
     R_(count_moves,history,l,f,r,b,u,d);
     U_(count_moves,history,l,f,r,b,u,d);
 }
-
+/* уже все предусмотрено */
 void last_corners_part1(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     int up_left = 0;
     int up_right = 0;
@@ -2636,6 +2714,9 @@ void last_corners_part2(int*count_moves,struct history* history,char l[SIZE][SIZ
     if(u[4][4]==u[2][2] && r[0][0]==r[2][2] && f[0][4]==f[2][2]){
         count--;
     }
+    /* если углы собраны, выход*/
+    if(count == 0){return;}
+
     turn_cube(count_moves,history,'d',l,f,r,b,u,d);
     turn_cube(count_moves,history,'d',l,f,r,b,u,d);
     int cnt = 0;
@@ -2644,7 +2725,7 @@ void last_corners_part2(int*count_moves,struct history* history,char l[SIZE][SIZ
         turn_cube(count_moves,history,'l',l,f,r,b,u,d);
         cnt++;
     }
-    for(int j = 0;j<count;j++){
+    for(int j = 0;j < count;j++){
         cnt = 0;
         while(d[0][4]!=d[2][2]){rotate_corn(count_moves,history,l,f,r,b,u,d);}
         while(f[4][4]==f[4][2] &&  r[4][0]==r[4][2] &&  d[0][4]==d[0][2] && cnt<4){
@@ -2652,12 +2733,9 @@ void last_corners_part2(int*count_moves,struct history* history,char l[SIZE][SIZ
             cnt++;
         }
     }
-    for(int k = 0;k<4;k++){
+    for(int k = 0;k < 4;k++){
         if(f[4][4]==f[2][2] &&  r[4][0]==r[2][2] &&  d[0][4]==d[2][2]){break;}
         D_(count_moves,history,l,f,r,b,u,d);
     }
 
 }
-
-//malloc ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ void, 
-// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½

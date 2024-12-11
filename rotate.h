@@ -7,34 +7,73 @@
 
 #include "save_history.h"
 
-void edgeUnClock(char edge[SIZE][SIZE]){
-    char temp[SIZE][SIZE];
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            temp[i][j] = edge[i][j];
-        }
-    }
-    for (int j = 0, k = 4; j < SIZE; j++, k--) {
-        for (int i = 0; i < SIZE; i++) {
-            edge[j][i] = temp[i][k];
-        }
-    }
-}
-void edgeClock(char edge[SIZE][SIZE]){
-    char temp[SIZE][SIZE];
-    for (int i = 0; i < SIZE; i++) {
-        for (int j = 0; j < SIZE; j++) {
-            temp[i][j] = edge[i][j];
-        }
-    }
-    for (int j = 0, k = 4; j < SIZE; j++, k--) {
-        for (int i = 0; i < SIZE; i++) {
-            edge[i][k] = temp[j][i];
-        }
-    }
-    
-}
+// void edgeUnClock(char edge[SIZE][SIZE]){
+//     char temp[SIZE][SIZE];
+//     for (int i = 0; i < SIZE; i++) {
+//         for (int j = 0; j < SIZE; j++) {
+//             temp[i][j] = edge[i][j];
+//         }
+//     }
+//     for (int j = 0, k = 4; j < SIZE; j++, k--) {
+//         for (int i = 0; i < SIZE; i++) {
+//             edge[j][i] = temp[i][k];
+//         }
+//     }
+// }
+void edgeUnClock(char edge[SIZE][SIZE]) {
+    char temp;
+    for (int i = 0; i < SIZE / 2; i++) {
+        for (int j = i; j < SIZE - i - 1; j++) {
+            temp = edge[i][j]; // Сохраняем значение верхнего элемента
 
+            // Перемещаем элементы из правой стороны
+            edge[i][j] = edge[j][SIZE - 1 - i];
+
+            // Перемещаем элементы из нижней стороны
+            edge[j][SIZE - 1 - i] = edge[SIZE - 1 - i][SIZE - 1 - j];
+
+            // Перемещаем элементы из левой стороны
+            edge[SIZE - 1 - i][SIZE - 1 - j] = edge[SIZE - 1 - j][i];
+
+            // Записываем сохраненное верхнее значение в левую сторону
+            edge[SIZE - 1 - j][i] = temp;
+        }
+    }
+}
+// void edgeClock(char edge[SIZE][SIZE]){
+//     char temp[SIZE][SIZE];
+//     for (int i = 0; i < SIZE; i++) {
+//         for (int j = 0; j < SIZE; j++) {
+//             temp[i][j] = edge[i][j];
+//         }
+//     }
+//     for (int j = 0, k = 4; j < SIZE; j++, k--) {
+//         for (int i = 0; i < SIZE; i++) {
+//             edge[i][k] = temp[j][i];
+//         }
+//     }
+    
+// }
+void edgeClock(char edge[SIZE][SIZE]) {
+    char temp;
+    for (int i = 0; i < SIZE / 2; i++) {
+        for (int j = i; j < SIZE - i - 1; j++) {
+            temp = edge[i][j]; // Сохраняем текущее значение
+
+            // Перемещаем значение из левой стороны в верхнюю
+            edge[i][j] = edge[SIZE - 1 - j][i];
+
+            // Перемещаем значение из нижней стороны в левую
+            edge[SIZE - 1 - j][i] = edge[SIZE - 1 - i][SIZE - 1 - j];
+
+            // Перемещаем значение из правой стороны в нижнюю
+            edge[SIZE - 1 - i][SIZE - 1 - j] = edge[j][SIZE - 1 - i];
+
+            // Записываем сохраненное значение в правую сторону
+            edge[j][SIZE - 1 - i] = temp;
+        }
+    }
+}
 void view_cube_from_history(int action, struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
 
     char* save_data_ptr = get_data_from_history(history, action);
@@ -70,6 +109,7 @@ void U(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][
     edgeUnClock(u);
     save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
+
 void U2(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     for (int j = 0; j < SIZE; j++) {
@@ -249,7 +289,7 @@ void B_(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE]
 void U_(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp[SIZE][SIZE];
     int k = 0;
-    //РЅРµ РґРѕРґРµР»Р°РЅРѕ (СЃРІРµСЂС…Сѓ РЅРµ РїРѕРІРѕСЂР°С‡РёРІР°РµС‚ )
+   
     for (int j = 0; j < SIZE; j++) {
 
         temp[k][j]  = f[k][j];
