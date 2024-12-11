@@ -1,7 +1,11 @@
+#ifndef ROTATE_H
+#define ROTATE_H
 
 #define SIZE 5
 #define SIZE_EDGE 25
 #define STEPS 8000
+
+#include "save_history.h"
 
 void edgeUnClock(char edge[SIZE][SIZE]){
     char temp[SIZE][SIZE];
@@ -30,64 +34,28 @@ void edgeClock(char edge[SIZE][SIZE]){
     }
     
 }
-void save_to_history(int* count, char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
-    if(SIZE_EDGE*(*count)*6>STEPS*150 - 150){printf("error memory");return;}
 
-    char* ptr_now = history + SIZE_EDGE*(*count)*6;
+void view_cube_from_history(int action, struct history* history, char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
 
-    memcpy(ptr_now,l,25);
+    char* save_data_ptr = get_data_from_history(history, action);
 
-    /*
-        struct save {
-            char* data;
-            int count;
-        }
+    if (save_data_ptr != NULL){
+        memcpy(l,save_data_ptr,25);
 
-        save1<->save2<->save3<->...
-    
-    */
-    
-    memcpy(ptr_now + SIZE_EDGE*1,f,25);
-    
-    memcpy(ptr_now + SIZE_EDGE*2,r,25);
-    
-    memcpy(ptr_now + SIZE_EDGE*3,b,25);
+        memcpy(f,save_data_ptr + SIZE_EDGE*1,25);
 
-    memcpy(ptr_now + SIZE_EDGE*4,u,25);
+        memcpy(r,save_data_ptr + SIZE_EDGE*2,25);
 
-    memcpy(ptr_now + SIZE_EDGE*5,d,25);
+        memcpy(b,save_data_ptr + SIZE_EDGE*3,25);
 
-    (*count)++;
-}
-void view_cube_from_history(int* count, char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
-    if(*count<1){*count=1;printf("0 element\n");}
+        memcpy(u,save_data_ptr + SIZE_EDGE*4,25);
 
-    char* ptr_now = history + SIZE_EDGE*(*count - 1)*6;
-    /*
-        
-        void view_cube_from_history(list* list, int action, char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+        memcpy(d,save_data_ptr + SIZE_EDGE*5,25);
+    }
 
-        struct list {
-            list_node* start;
-            list_node* end;
-            list_node* current;             
-        }
-
-    */
-    memcpy(l,ptr_now,25);
-
-    memcpy(f,ptr_now + SIZE_EDGE*1,25);
-
-    memcpy(r,ptr_now + SIZE_EDGE*2,25);
-
-    memcpy(b,ptr_now + SIZE_EDGE*3,25);
-
-    memcpy(u,ptr_now + SIZE_EDGE*4,25);
-
-    memcpy(d,ptr_now + SIZE_EDGE*5,25);
 
 }
-void U(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void U(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     int k = 0;
     
@@ -100,9 +68,9 @@ void U(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char
     }
    
     edgeUnClock(u);
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-void U2(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void U2(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     for (int j = 0; j < SIZE; j++) {
         temp = b[1][j];
@@ -111,10 +79,10 @@ void U2(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],cha
         f[1][j] = l[1][j];
         l[1][j] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
 
-void E(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void E(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     int k = 2;
     for (int j = 0; j < SIZE; j++) {
@@ -124,9 +92,9 @@ void E(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char
         f[k][j] = l[k][j];
         l[k][j] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-void D2(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void D2(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     int k = 3;
     for (int j = 0; j < SIZE; j++) {
@@ -136,9 +104,9 @@ void D2(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],cha
         f[k][j] = l[k][j];
         l[k][j] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-void D(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void D(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     int k = 4;
     //не доделано (сверху не поворачивает )
@@ -150,9 +118,9 @@ void D(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char
         l[k][j] = temp;
     }
     edgeClock(d);
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-void L_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void L_(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     
     char temp;
     edgeUnClock(l);
@@ -163,10 +131,10 @@ void L_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],cha
         d[i][k]=b[4-i][4-k];
         b[4-i][4-k]=temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
 
-void L2_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void L2_(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     int k = 1;
     for (int i = 0; i < SIZE; i++) {
@@ -176,9 +144,9 @@ void L2_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],ch
         d[i][k] = b[4-i][4-k];
         b[4-i][4-k] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-void M(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void M(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     int k = 2;
     for (int i = 0; i < SIZE; i++) {
@@ -188,9 +156,9 @@ void M(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char
         d[i][k] = b[4-i][4-k];
         b[4-i][4-k] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-void R2(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void R2(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     int k = 3;
     for (int i = 0; i < SIZE; i++) {
@@ -200,11 +168,11 @@ void R2(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],cha
         d[i][k] = b[4-i][4-k];
         b[4-i][4-k] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
 
 
-void R(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void R(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     
     char temp;
     edgeClock(r);
@@ -215,12 +183,12 @@ void R(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char
         d[i][k]=b[4-i][4-k];
         b[4-i][4-k] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
 
 
 
-void F(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void F(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     edgeClock(f);
     int k = 4;
     char temp;
@@ -232,9 +200,9 @@ void F(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char
         d[4-k][4-j] = r[j][4-k];
         r[j][4-k] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-void F_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void F_(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     edgeUnClock(f);
     int k = 4;
     char temp;
@@ -246,10 +214,10 @@ void F_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],cha
         d[4-k][4-j] = l[4-j][k];
         l[4-j][k] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
 
-void B(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void B(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     edgeClock(b);
     int k = 0;
     char temp;
@@ -261,9 +229,9 @@ void B(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char
         d[4-k][4-j] = l[4-j][k];
         l[4-j][k] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-void B_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
+void B_(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]){
     edgeUnClock(b);
     int k = 0;
     char temp;
@@ -275,10 +243,10 @@ void B_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],cha
         d[4-k][4-j] = r[j][4-k];
         r[j][4-k] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
 /////////////////////////////
-void U_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void U_(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp[SIZE][SIZE];
     int k = 0;
     //не доделано (сверху не поворачивает )
@@ -291,9 +259,9 @@ void U_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],cha
         l[k][j] = temp[k][j];
     }
     edgeClock(u);
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-void U2_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void U2_(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     for (int j = 0; j < SIZE; j++) {
         temp = b[1][j];
@@ -302,9 +270,9 @@ void U2_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],ch
         f[1][j] = r[1][j];
         r[1][j] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-void E_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void E_(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     int k = 2;
     for (int j = 0; j < SIZE; j++) {
@@ -314,9 +282,9 @@ void E_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],cha
         r[k][j] = b[k][j];
         b[k][j] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-void D2_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void D2_(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     int k = 3;
     for (int j = 0; j < SIZE; j++) {
@@ -326,9 +294,9 @@ void D2_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],ch
         f[k][j] = r[k][j];
         r[k][j] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-void D_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void D_(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     int k = 4;
     //не доделано (сверху не поворачивает )
@@ -340,11 +308,11 @@ void D_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],cha
         r[k][j] = temp;
     }
     edgeUnClock(d);
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
 
 /////////////////
-void L(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void L(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     
     char temp;
     edgeClock(l);
@@ -356,10 +324,10 @@ void L(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char
         f[i][k]=temp;
 
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
 
-void L2(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void L2(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     int k = 1;
     for (int i = 0; i < SIZE; i++) {
@@ -369,9 +337,9 @@ void L2(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],cha
         d[i][k] = f[i][k];
         f[i][k] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-void M_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void M_(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     int k = 2;
     for (int i = 0; i < SIZE; i++) {
@@ -381,9 +349,9 @@ void M_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],cha
         d[i][k] = f[i][k];
         f[i][k] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-void R2_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void R2_(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     char temp;
     int k = 3;
     for (int i = 0; i < SIZE; i++) {
@@ -393,10 +361,9 @@ void R2_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],ch
         d[i][k] = f[i][k];
         f[i][k] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
-
-void R_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
+void R_(int*count_moves,struct history* history,char l[SIZE][SIZE], char f[SIZE][SIZE],char r[SIZE][SIZE], char b[SIZE][SIZE],char u[SIZE][SIZE],char d[SIZE][SIZE]) {
     
     char temp;
     edgeUnClock(r);
@@ -407,5 +374,7 @@ void R_(int*count_moves,char* history,char l[SIZE][SIZE], char f[SIZE][SIZE],cha
         d[i][k] = f[i][k];
         f[i][k] = temp;
     }
-    save_to_history(count_moves,history,l,f, r, b,u,d);
+    save_data_to_history(history,l,f, r, b,u,d, count_moves);
 }
+
+#endif
